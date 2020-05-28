@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('/theme/layout');
 });
+
+
+Route::resource('alergia','AlergiaController');
+Route::resource('tipoAlergia','TipoAlergiaController');
