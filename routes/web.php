@@ -14,9 +14,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('/theme/layout');
+    return view('welcome');
 });
 
+Route::get('cerrar_sesion', function () {
+  Auth::logout();
+    return view('welcome');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('alergia','AlergiaController');
+
 Route::resource('tipoAlergia','TipoAlergiaController');
+
+Route::resource('usuario','UsuarioController');
