@@ -43,3 +43,7 @@ Route::resource('municipio','MunicipioController');
 Route::post('/parroquia/municipio','ParroquiaController@municipio');
 
 Route::resource('parroquia','ParroquiaController');
+
+Route::resource('cargo','CargoController');
+
+Route::resource('empleado','EmpleadoController');
