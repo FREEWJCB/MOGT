@@ -31,3 +31,15 @@ Route::resource('alergia','AlergiaController');
 Route::resource('tipoAlergia','TipoAlergiaController');
 
 Route::resource('usuario','UsuarioController');
+
+Route::resource('discapacidad','DiscapacidadController');
+
+Route::resource('tipoDiscapacidad','TipoDiscapacidadController');
+
+Route::resource('estado','EstadoController');
+
+Route::resource('municipio','MunicipioController');
+
+Route::post('/parroquia/municipio','ParroquiaController@municipio');
+
+Route::resource('parroquia','ParroquiaController');

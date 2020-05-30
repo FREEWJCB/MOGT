@@ -1,5 +1,5 @@
 <header class="header">
-    <a href="#" class="logo">
+    <a href="{{route('home')}}" class="logo">
         <!-- Add the class icon to your logo image or logo icon to add the margining -->
         {{ config('app.name', 'Laravel') }}
     </a>

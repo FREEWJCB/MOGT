@@ -35,13 +35,15 @@
                         <i class="fa fa-angle-double-right"></i>
                         Tipo de alergia</a>
                     </li>
-                    <li><a href="#">
-                        <i class="fa fa-angle-double-right"></i>
-                        Discapacidad</a>
+                    <li>
+                    	<a href="{{ route('discapacidad.index')}}">
+                            <i class="fa fa-angle-double-right"></i> Discapacidad
+                        </a>
                     </li>
-                    <li><a href="#">
-                        <i class="fa fa-angle-double-right"></i>
-                        Tipo de discapacidad</a>
+                    <li>
+                        <a href="{{ route('tipoDiscapacidad.index')}}">
+                            <i class="fa fa-angle-double-right"></i> Tipo de Discapacidad
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -90,17 +92,17 @@
               </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="#">
-                        <i class="fa fa-angle-double-right"></i>
-                        Estado</a>
+                        <a href="{{ route('estado.index')}}">
+                            <i class="fa fa-angle-double-right"></i> Estado
+                        </a>
                     </li>
                     <li>
-                        <a href="#">
-                        <i class="fa fa-angle-double-right"></i>
-                        Municipio</a>
+                         <a href="{{ route('municipio.index')}}">
+                            <i class="fa fa-angle-double-right"></i> Municipio
+                        </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('parroquia.index') }}">
                         <i class="fa fa-angle-double-right"></i>
                         Parroquia</a>
                     </li>
