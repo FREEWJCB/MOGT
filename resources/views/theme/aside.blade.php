@@ -71,15 +71,15 @@
                     <li>
                         <a href="#">
                         <i class="fa fa-angle-double-right"></i>
-                        Prefesor</a>
+                        Profesor</a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{route('empleado.index')}}">
                         <i class="fa fa-angle-double-right"></i>
                         Empleados</a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{route('cargo.index')}}">
                         <i class="fa fa-angle-double-right"></i>
                         Cargo</a>
                     </li>

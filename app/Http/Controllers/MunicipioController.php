@@ -18,7 +18,7 @@ class MunicipioController extends Controller
     {
         $nombre = $request->get('buscar');
 
-        $variablesurl = $request->all();        
+        $variablesurl = $request->all();
 
         $municipios = Municipio::where('municipio','like',"%$nombre%")->orderBy('id','asc')->paginate(4)
         ->appends($variablesurl);
@@ -49,9 +49,9 @@ class MunicipioController extends Controller
             'municipio' => 'required',
             'estado_id' => 'required',
         ]);
-   
+
         Municipio::create($request->all());
-    
+
         return Redirect::to('municipio')
        ->with('mensaje','Municipio creada satisfactoriamente.');
     }
@@ -79,7 +79,7 @@ class MunicipioController extends Controller
 
         $where = array('id' => $id);
         $data['municipio_info'] = Municipio::where($where)->first();
- 
+
         return view('municipio.edit',compact('estados'), $data);
     }
 
@@ -96,12 +96,12 @@ class MunicipioController extends Controller
             'municipio' => 'required',
             'estado_id' => 'required',
         ]);
-         
+
         $update = [ 'municipio' => $request->municipio,
                     'estado_id' => $request->estado_id,
                 ];
         Municipio::where('id',$id)->update($update);
-   
+
         return Redirect::to('municipio')
        ->with('success','Municipio actualizada satisfactoriamente');
     }
@@ -118,7 +118,7 @@ class MunicipioController extends Controller
             //Eliminar registro
             Municipio::where('id',$id)->delete();
             return Redirect::to('municipio')->with('mensaje','Municipio eliminada satisfactoriamente');
-        } 
+        }
         catch (\Exception $e) {
             return Redirect::to('municipio')->with('mensaje','No puede ser eliminada, está siendo usada.');
         }

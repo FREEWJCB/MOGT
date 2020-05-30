@@ -57,7 +57,6 @@
                                           <option @if($municipio->id === $parroquia_info->municipio_id) selected @endif value="{{$municipio['id']}}"> {{$municipio['municipio']}} </option>
                                         @endforeach
                                 </select>
-                                {{$municipios[0]->id}}-{{$parroquia_info->municipio_id}}
                             </div>
                         </div>
                             <div class="form-group">
