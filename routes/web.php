@@ -44,12 +44,6 @@ Route::post('/parroquia/municipio','ParroquiaController@municipio');
 
 Route::resource('parroquia','ParroquiaController');
 
-<<<<<<< HEAD
 Route::resource('empleado','EmpleadoController');
 
 Route::resource('cargo','CargoController');
-=======
-Route::resource('cargo','CargoController');
-
-Route::resource('empleado','EmpleadoController');
->>>>>>> 30a864a15ab8045429cb1958838f001146f6a35a
