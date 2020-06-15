@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,14 @@ Route::resource('parroquia','ParroquiaController');
 Route::resource('empleado','EmpleadoController');
 
 Route::resource('cargo','CargoController');
+
+Route::get('/auth', function(){
+  if(Auth::user()){
+    return Auth::user();
+  }else{
+    return response()->json([
+        'status' => 'Ocurrio un error!',
+        'msg' => 'El usuario no esta loggeado.',
+    ],400);
+  }
+});
