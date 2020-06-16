@@ -4,7 +4,9 @@
       <nav class="navbar navbar-white bg-white">
         <div class="row w-100 justify-content-between">
           <div class="col-2">
-            <a class="navbar-brand text-white">SIDETH</a>
+            <router-link to="/home">
+              <a class="navbar-brand text-white">SIDETH</a>
+            </router-link>
             <span class="fas fa-align-justify text-white" @click="ocultarMenu(menuOculto)"></span>
           </div>
           <div class="nav-item dropdown col-2 float-right text-center text-dark">
@@ -19,6 +21,7 @@
         </div>
       </nav>
     </nav>
+    <!-- Menu Lateral -->
     <aside class="navbar-dark position-fixed bg-dark h-100 d-flex text-right" id="menu-desplegable" style="z-index: 99;"
     :class="menuOculto">
       <ul class="nav flex-column w-100 mt-3">
@@ -26,9 +29,11 @@
               <a class="nav-link mr-4 text-white" href="#">Hello {{ auth.name || 'User' }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link mr-4 text-white active" href="#">
-            Inicio
-          </a>
+          <router-link to="/home">
+            <a class="nav-link mr-4 text-white active">
+              <span class="fas fa-home"></span> Inicio
+            </a>
+          </router-link>
         </li>
         <li class="nav-item accordion" id="accordionExample" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
           <a class="nav-link mr-4 text-white" href="#">
@@ -37,10 +42,10 @@
           </a>
           <ul class="nav flex-column bg-secondary collapse" id="collapseOne" aria-labelledby="headingOne" data-parent="#accordionExample">
             <li class="nav-item">
-              <a class="nav-link mr-4 text-white active" href="#">Active</a>
+              <a class="nav-link mr-4 text-white" href="#">Tipo de Discapacidad</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link mr-4 text-white" href="#">Link</a>
+              <a class="nav-link mr-4 text-white" href="#">Discapacidad</a>
             </li>
             <li class="nav-item">
               <a class="nav-link mr-4 text-white" href="#">Link</a>

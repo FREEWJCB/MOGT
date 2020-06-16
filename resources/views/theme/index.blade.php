@@ -20,17 +20,5 @@
     <app-Component></app-Component>
   </div>
 
-  <!-- <script>
-  	 $(document).ready(function(){
-       $('#myModal').on('shown.bs.modal', function () {
-         $('#myInput').trigger('focus')
-          })
-    $(".dispose-toast").click(function(){
-        $(this).parent().parent().remove();
-    });
-          $("#myToast").toast({autohide:false})
-            $("#myToast").toast('show');
-    });
-  </script> -->
 </body>
 </html>

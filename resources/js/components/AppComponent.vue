@@ -3,13 +3,14 @@
     <!-- Nav -->
     <nav-barra></nav-barra>
     <!-- Main -->
-    <main-component></main-component>
+    <router-view></router-view>
     <!-- Footer -->
     <footer-component></footer-component>
   </div>
 </template>
 
 <script>
+import $ from "jquery";
 import NavBarra from './theme/NavComponent.vue';
 import FooterComponent from './theme/FooterComponent.vue';
 import MainComponent from './theme/MainComponent.vue';
@@ -24,6 +25,16 @@ export default {
     }
   },
   mounted() {
+    $(document).ready(function(){
+      $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+         })
+   $(".dispose-toast").click(function(){
+       $(this).parent().parent().remove();
+   });
+         $("#myToast").toast({autohide:false})
+           $("#myToast").toast('show');
+   });
       console.log('Component App mounted.');
   }
 }
