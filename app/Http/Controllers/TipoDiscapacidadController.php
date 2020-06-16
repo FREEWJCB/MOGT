@@ -19,10 +19,12 @@ class TipoDiscapacidadController extends Controller
 
         $variablesurl = $request->all();
 
-        $tipos_d = Tipo_discapacidad::where('tipo_d','like',"%$nombre%")->orderBy('id','asc')->paginate(4)
-        ->appends($variablesurl);
+        $tipos_d = Tipo_discapacidad::where('tipo_d','like',"%$nombre%")->orderBy('id','desc')
+        ->skip(0)
+        ->take(6)
+        ->get();
 
-        return view('tipoDiscapacidad.list', compact('tipos_d'));
+        return $tipos_d;
     }
 
     /**
@@ -47,10 +49,11 @@ class TipoDiscapacidadController extends Controller
             'tipo_d' => 'required',
         ]);
 
-        tipo_discapacidad::create($request->all());
+        $tipo_d = new Tipo_discapacidad();
+        $tipo_d->tipo_d = $request->tipo_d;
+        $tipo_d->save();
 
-        return Redirect::to('tipoDiscapacidad')
-       ->with('mensaje','Tipo de discapacidad creada satisfactoriamente.');
+        return $tipo_d;
     }
 
     /**
@@ -92,10 +95,9 @@ class TipoDiscapacidadController extends Controller
         ]);
 
         $update = ['tipo_d' => $request->tipo_d];
-        tipo_discapacidad::where('id',$id)->update($update);
+        $data = tipo_discapacidad::where('id',$id)->update($update);
 
-        return Redirect::to('tipoDiscapacidad')
-       ->with('success','Tipo de discapacidad actualizada satisfactoriamente');
+        return $data;
     }
 
     /**
@@ -108,16 +110,36 @@ class TipoDiscapacidadController extends Controller
     {
         try {
             //Eliminar registro
-            tipo_discapacidad::where('id',$id)->delete();
-            return Redirect::to('tipoDiscapacidad')->with('mensaje','Tipo de discapacidad eliminada satisfactoriamente');
+            return tipo_discapacidad::where('id',$id)->delete();
         }
         catch (\Exception $e) {
-            return Redirect::to('tipoDiscapacidad')->with('mensaje','No puede ser eliminada, está siendo usada.');
+          return response()->json([
+              'status' => 'Ocurrio un error!',
+              'msg' => 'No puede ser eliminada, está siendo usada.',
+          ],400);
         }
     }
 
     public function buscador (Request $request){
         $tiposb = tipo_discapacidad::where("tipo_d","like",$request->texto."%")->take(10)->get();
         return view('tipoDiscapacidad.list', compact('tiposb'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function contar(Request $request)
+    {
+        if($request->ajax()){
+
+            $data = tipo_discapacidad::all()->count();
+                /* skip() para saltar entre la consulta
+                *   take() para limitar el resultado
+                */
+
+                return $data;
+        }
     }
 }

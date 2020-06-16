@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <nav>
-      <nav class="navbar navbar-white bg-white">
+      <nav class="navbar navbar-white bg-white" id="navegacion">
         <div class="row w-100 justify-content-between">
           <div class="col-2">
             <router-link to="/home">
@@ -42,7 +42,9 @@
           </a>
           <ul class="nav flex-column bg-secondary collapse" id="collapseOne" aria-labelledby="headingOne" data-parent="#accordionExample">
             <li class="nav-item">
-              <a class="nav-link mr-4 text-white" href="#">Tipo de Discapacidad</a>
+              <router-link to="/tipo-discapacidad">
+                <a class="nav-link mr-4 text-white" href="#">Tipo de Discapacidad</a>
+              </router-link>
             </li>
             <li class="nav-item">
               <a class="nav-link mr-4 text-white" href="#">Discapacidad</a>
