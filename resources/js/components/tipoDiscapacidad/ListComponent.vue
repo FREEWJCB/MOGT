@@ -184,6 +184,9 @@ export default {
             created_at: value.data.created_at,
             updated_at: value.data.updated_at,
           });
+          if(this.paginacion.pag != this.paginacion.paginas.length){
+            this.tiposDiscapacidad.pop();
+          }
           this.clean();
         })
         .catch((err) => {console.error(err);})
@@ -220,6 +223,8 @@ export default {
     clean(){
       this.tipoDiscapacidad.id = 0;
       this.tipoDiscapacidad.tipo_d = '';
+      // Reset errors
+      this.$validator.reset()
     },
     count(){
       axios.get('/tipoDiscapacidad/contar')

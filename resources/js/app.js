@@ -8,9 +8,12 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VeeValidate, { Validator } from 'vee-validate';
+import es from 'vee-validate/dist/locale/es.js';
 import VueRouter from 'vue-router'
 import { rutas } from './rutas.js'
 
+Vue.use(VeeValidate);
 Vue.use(VueRouter);
 
 const enrutador = new VueRouter({
@@ -18,6 +21,8 @@ const enrutador = new VueRouter({
   mode: 'history'
 })
 
+// Cambiando idioma
+Validator.localize('es', es);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
