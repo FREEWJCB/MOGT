@@ -28,6 +28,7 @@
         <li class="nav-item">
               <a class="nav-link mr-4 text-white" href="#">Hello {{ auth.name || 'User' }}</a>
         </li>
+        <hr class="w-100 bg-secondary">
         <li class="nav-item">
           <router-link to="/home">
             <a class="nav-link mr-4 text-white active">

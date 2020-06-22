@@ -13,7 +13,13 @@ import es from 'vee-validate/dist/locale/es.js';
 import VueRouter from 'vue-router'
 import { rutas } from './rutas.js'
 
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {
+  classes: true,
+  classNames: {
+    valid: 'is-valid',
+    invalid: 'is-invalid'
+  }
+});
 Vue.use(VueRouter);
 
 const enrutador = new VueRouter({
