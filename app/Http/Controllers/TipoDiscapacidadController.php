@@ -17,11 +17,11 @@ class TipoDiscapacidadController extends Controller
     {
         $nombre = $request->get('buscar');
 
-        $variablesurl = $request->all();
+        $pag = $request->pag;
 
         $tipos_d = Tipo_discapacidad::where('tipo_d','like',"%$nombre%")->orderBy('id','desc')
-        ->skip(0)
-        ->take(6)
+        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+        ->take(6) //para limitar el resultado
         ->get();
 
         return $tipos_d;
@@ -122,7 +122,7 @@ class TipoDiscapacidadController extends Controller
 
     public function buscador (Request $request){
         $tiposb = tipo_discapacidad::where("tipo_d","like",$request->texto."%")->take(10)->get();
-        return view('tipoDiscapacidad.list', compact('tiposb'));
+        return $tiposb;
     }
 
     /**
@@ -135,11 +135,8 @@ class TipoDiscapacidadController extends Controller
         if($request->ajax()){
 
             $data = tipo_discapacidad::all()->count();
-                /* skip() para saltar entre la consulta
-                *   take() para limitar el resultado
-                */
 
-                return $data;
+            return $data;
         }
     }
 }

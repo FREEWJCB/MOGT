@@ -35,6 +35,8 @@ Route::resource('usuario','UsuarioController');
 
 Route::resource('discapacidad','DiscapacidadController');
 
+Route::get("/tipoDiscapacidad/contar", "TipoDiscapacidadController@contar");
+
 Route::resource('tipoDiscapacidad','TipoDiscapacidadController');
 
 Route::resource('estado','EstadoController');

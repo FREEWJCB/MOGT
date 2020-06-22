@@ -44,20 +44,58 @@
           <div class="col">
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span class="fas fa-angle-double-left"></span></a>
+                <li class="page-item disabled" v-if="paginacion.pag == 1">
+                  <a class="page-link" tabindex="-1" aria-disabled="true">
+                    <span class="fas fa-angle-double-left"></span>
+                  </a>
                 </li>
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span class="fas fa-angle-left"></span></a>
+                <li class="page-item" v-else>
+                  <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: 1 } }">
+                    <a class="page-link text-primary" tabindex="-1" aria-disabled="true">
+                      <span class="fas fa-angle-double-left"></span>
+                    </a>
+                  </router-link>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#"><span class="fas fa-angle-right"></span></a>
+                <li class="page-item disabled" v-if="paginacion.pag == 1">
+                  <a class="page-link" tabindex="-1" aria-disabled="true">
+                    <span class="fas fa-angle-left"></span>
+                  </a>
                 </li>
-                <li class="page-item">
-                  <a class="page-link" href="#"><span class="fas fa-angle-double-right"></span></a>
+                <li class="page-item" v-else>
+                <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: paginacion.pag - 1} }">
+                  <a class="page-link text-primary" tabindex="-1" aria-disabled="true">
+                    <span class="fas fa-angle-left"></span>
+                  </a>
+                </router-link>
+                </li>
+                <li class="page-item" v-for="p in paginacion.paginas" :key="p.key">
+                  <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: p+1 } }">
+                    <a class="page-link">{{ p + 1 }}</a>
+                  </router-link>
+                </li>
+                <li class="page-item disabled" v-if="paginacion.paginas.length == paginacion.pag">
+                    <a class="page-link" aria-disabled="true">
+                      <span class="fas fa-angle-right"></span>
+                    </a>
+                </li>
+                <li class="page-item" v-else>
+                  <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: paginacion.pag + 1 } }">
+                    <a class="page-link text-primary">
+                      <span class="fas fa-angle-right"></span>
+                    </a>
+                  </router-link>
+                </li>
+                <li class="page-item disabled" v-if="paginacion.paginas.length == paginacion.pag">
+                  <a class="page-link" aria-disabled="true">
+                    <span class="fas fa-angle-double-right"></span>
+                  </a>
+                </li>
+                <li class="page-item" v-else>
+                  <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: paginacion.paginas.length } }">
+                    <a class="page-link text-primary">
+                      <span class="fas fa-angle-double-right"></span>
+                    </a>
+                  </router-link>
                 </li>
               </ul>
             </nav>
@@ -109,12 +147,20 @@ export default {
       },
       paginacion: {
         total: 0,
+        pag: this.$route.params.pag, // obtener parametros de la url
+        vista: 6, // resultados por ver
+        paginas: [],
       }
     }
   },
   methods: {
     getAll(){
-      axios.get('/tipoDiscapacidad', {buscar: ''})
+      axios.get('/tipoDiscapacidad', {
+        params: {
+          buscar: '',
+          pag: this.paginacion.pag,
+        }
+      })
         .then((value) => {this.tiposDiscapacidad = value.data;})
         .catch((err) => {console.error(err);})
     },
@@ -167,14 +213,36 @@ export default {
     },
     count(){
       axios.get('/tipoDiscapacidad/contar')
-        .then((value) => {this.paginacion.total = value.data})
+        .then((value) => {
+          this.paginacion.total = value.data;
+          this.paginacion.paginas = [];
+          for (var i = 0; i < (value.data / this.paginacion.vista); i++) {
+            this.paginacion.paginas.push(i);
+          }
+        })
+        .catch((err) => {console.error(err);})
+
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    // react to route changes...
+    // don't forget to call next()
+    this.paginacion.pag = to.params.pag;
+    next(this.getAll());
+  },
+  beforeRouteLeave (to, from, next) {
+    const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+    if (answer) {
+      next()
+    } else {
+      next(false)
     }
   },
   mounted() {
     //do something after mounting vue instance
     this.getAll();
-  }
-
+    this.count();
+  },
 }
 </script>
 

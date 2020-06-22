@@ -1,4 +1,4 @@
 export const rutas = [
-    {path: '/home', component: () => import(/* webpackChunkName: "Routes" */ './components/theme/MainComponent.vue') },
-    {path: '/tipo-discapacidad', component: () => import(/* webpackChunkName: "Routes" */ './components/tipoDiscapacidad/ListComponent.vue') },
+    {path: '/home', name: 'theme', component: () => import(/* webpackChunkName: "Routes" */ './components/theme/MainComponent.vue') },
+    {path: '/tipo-discapacidad/:pag', name: 'tipoDiscapacidad', component: () => import(/* webpackChunkName: "Routes" */ './components/tipoDiscapacidad/ListComponent.vue') },
 ]
