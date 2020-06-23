@@ -12,6 +12,7 @@ import VeeValidate, { Validator } from 'vee-validate';
 import es from 'vee-validate/dist/locale/es.js';
 import VueRouter from 'vue-router'
 import { rutas } from './rutas.js'
+import store from './components/store/index.js'
 
 Vue.use(VeeValidate, {
   classes: true,
@@ -51,4 +52,5 @@ Vue.component('app-component', require('./components/AppComponent.vue').default)
 const app = new Vue({
     el: '#app',
     router: enrutador,
+    store,
 });

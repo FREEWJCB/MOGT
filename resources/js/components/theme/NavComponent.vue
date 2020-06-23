@@ -22,7 +22,7 @@
       </nav>
     </nav>
     <!-- Menu Lateral -->
-    <aside class="navbar-dark position-fixed bg-dark h-100 d-flex text-right" id="menu-desplegable" style="z-index: 99;"
+    <aside class="navbar-dark position-fixed bg-dark h-100 d-flex text-left" id="menu-desplegable" style="z-index: 99;"
     :class="menuOculto">
       <ul class="nav flex-column w-100 mt-3">
         <li class="nav-item">
