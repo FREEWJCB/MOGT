@@ -22,6 +22,9 @@
         <!-- Table -->
         <list/>
         <!-- Pagination -->
+        <pagination
+        ruta="tipoDiscapacidad"
+        :paginacion="paginacion"/>
       </div>
     </main>
     <!-- Modal -->
@@ -31,22 +34,23 @@
 
 <script>
 import List from './ListComponent.vue'
+import Pagination from './PaginationComponent.vue'
+import { mapActions } from 'vuex'
 export default {
   components: {
-    List
-  }
-  // data(){
-  //   return {
-  //     paginacion: {
-  //       total: 0,
-  //       pag: this.$route.params.pag, // obtener parametros de la url
-  //       vista: 6, // resultados por ver
-  //       paginas: [],
-  //     },
-  //     message: [],
-  //     busqueda: ''
-  //   }
-  // },
+    List,
+    Pagination
+  },
+  data(){
+    return {
+      paginacion: {
+        total: 0,
+        pag: this.$route.params.pag, // obtener parametros de la url
+        vista: 6, // resultados por ver
+        paginas: [],
+      },
+    }
+  },
   // computed: {
   //   isComplete(){
   //     return (this.tipoDiscapacidad.tipo_d == '')?false:true;
@@ -163,12 +167,27 @@ export default {
   //
   //   }
   // },
-  // beforeRouteUpdate (to, from, next) {
-  //   // react to route changes...
-  //   // don't forget to call next()
-  //   this.paginacion.pag = to.params.pag;
-  //   next(this.getAll());
-  // },
+  methods: {
+        ...mapActions('tipoDiscapacidad',['getAllTipoD']),
+    count(){
+      axios.get('/tipoDiscapacidad/contar')
+      .then((value) => {
+        this.paginacion.total = value.data;
+        this.paginacion.paginas = [];
+        for (var i = 0; i < (value.data / this.paginacion.vista); i++) {
+          this.paginacion.paginas.push(i);
+        }
+      })
+      .catch((err) => {console.error(err);})
+
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    // react to route changes...
+    // don't forget to call next()
+    this.paginacion.pag = to.params.pag;
+    next(this.getAllTipoD(to.params.pag, ''));
+  },
   // beforeRouteLeave (to, from, next) {
   //   const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
   //   if (answer) {
@@ -177,11 +196,11 @@ export default {
   //     next(false)
   //   }
   // },
-  // mounted() {
-  //   //do something after mounting vue instance
-  //   this.getAll();
-  //   this.count();
-  // },
+  mounted() {
+    //do something after mounting vue instance
+    this.getAllTipoD();
+    this.count();
+  },
 }
 </script>
 

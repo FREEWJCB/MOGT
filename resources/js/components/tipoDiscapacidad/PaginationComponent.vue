@@ -9,7 +9,7 @@
             </a>
           </li>
           <li class="page-item" v-else>
-            <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: 1 } }">
+            <router-link :to="{ name: ruta, params: { pag: 1 } }">
               <a class="page-link text-primary" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-angle-double-left"></span>
               </a>
@@ -21,14 +21,14 @@
             </a>
           </li>
           <li class="page-item" v-else>
-          <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: paginacion.pag - 1} }">
+          <router-link :to="{ name: ruta, params: { pag: paginacion.pag - 1} }">
             <a class="page-link text-primary" tabindex="-1" aria-disabled="true">
               <span class="fas fa-angle-left"></span>
             </a>
           </router-link>
           </li>
           <li class="page-item" v-for="p in paginacion.paginas" :key="p.key">
-            <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: p+1 } }">
+            <router-link :to="{ name: ruta, params: { pag: p+1 } }">
               <a class="page-link">{{ p + 1 }}</a>
             </router-link>
           </li>
@@ -38,7 +38,7 @@
               </a>
           </li>
           <li class="page-item" v-else>
-            <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: paginacion.pag + 1 } }">
+            <router-link :to="{ name: ruta, params: { pag: paginacion.pag + 1 } }">
               <a class="page-link text-primary">
                 <span class="fas fa-angle-right"></span>
               </a>
@@ -50,7 +50,7 @@
             </a>
           </li>
           <li class="page-item" v-else>
-            <router-link :to="{ name: 'tipoDiscapacidad', params: { pag: paginacion.paginas.length } }">
+            <router-link :to="{ name: ruta, params: { pag: paginacion.paginas.length } }">
               <a class="page-link text-primary">
                 <span class="fas fa-angle-double-right"></span>
               </a>
@@ -63,7 +63,16 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
+  props: {
+    ruta: String,
+    paginacion: Object
+  },
+  data(){
+    return {
+    }
+  }
 }
 </script>
 
