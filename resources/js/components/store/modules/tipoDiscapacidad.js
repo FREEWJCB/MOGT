@@ -22,11 +22,11 @@ const tipoDiscapacidad = {
     getAllTipoD: state => state.allTipoD
   },
   actions: {
-    getAllTipoD: ({commit, state}, pag, buscar) =>{
+    getAllTipoD: ({commit, state}, parametros) =>{
       axios.get('/tipoDiscapacidad', {
             params: {
-              buscar: buscar,
-              pag: pag,
+              buscar: parametros.buscar,
+              pag: parametros.pag,
             }
           })
             .then((value) => {commit("loadingAllTD", {value: value.data});})

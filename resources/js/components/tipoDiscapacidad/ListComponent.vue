@@ -42,7 +42,7 @@ export default {
   },
   created() {
     //do something after creating vue instance
-    this.getAllTipoD();
+    this.getAllTipoD({ pag: this.$route.params.pag, buscar: ''});
   }
 }
 </script>

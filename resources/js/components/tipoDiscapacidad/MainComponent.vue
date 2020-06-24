@@ -18,6 +18,8 @@
             </button>
           </div>
           <!-- Search -->
+          <search
+          :Buscar="getAllTipoD"/>
         </div>
         <!-- Table -->
         <list/>
@@ -33,11 +35,13 @@
 </template>
 
 <script>
+import Search from './SearchComponent.vue'
 import List from './ListComponent.vue'
 import Pagination from './PaginationComponent.vue'
 import { mapActions } from 'vuex'
 export default {
   components: {
+    Search,
     List,
     Pagination
   },
@@ -168,7 +172,7 @@ export default {
   //   }
   // },
   methods: {
-        ...mapActions('tipoDiscapacidad',['getAllTipoD']),
+    ...mapActions('tipoDiscapacidad',['getAllTipoD']),
     count(){
       axios.get('/tipoDiscapacidad/contar')
       .then((value) => {
@@ -186,7 +190,7 @@ export default {
     // react to route changes...
     // don't forget to call next()
     this.paginacion.pag = to.params.pag;
-    next(this.getAllTipoD(to.params.pag, ''));
+    next(this.getAllTipoD({ pag: to.params.pag, buscar: ''}));
   },
   // beforeRouteLeave (to, from, next) {
   //   const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
@@ -198,7 +202,7 @@ export default {
   // },
   mounted() {
     //do something after mounting vue instance
-    this.getAllTipoD();
+    this.getAllTipoD({ pag: this.$route.params.pag, buscar: ''});
     this.count();
   },
 }
