@@ -22,7 +22,10 @@
           :Buscar="getAllTipoD"/>
         </div>
         <!-- Table -->
-        <list/>
+        <list
+        :total="paginacion.total"
+        :pag="paginacion.pag"
+        :vista="paginacion.vista"/>
         <!-- Pagination -->
         <pagination
         ruta="tipoDiscapacidad"
@@ -30,20 +33,23 @@
       </div>
     </main>
     <!-- Modal -->
-
+    <formulario/>
   </div>
 </template>
 
 <script>
-import Search from './SearchComponent.vue'
+import Search from '../theme/SearchComponent.vue'
+import Pagination from '../theme/PaginationComponent.vue'
 import List from './ListComponent.vue'
-import Pagination from './PaginationComponent.vue'
-import { mapActions } from 'vuex'
+import Formulario from './FormComponent.vue'
+import { mapActions, mapMutations } from 'vuex'
+import { bus } from '../../bus.js'
 export default {
   components: {
     Search,
     List,
-    Pagination
+    Pagination,
+    Formulario
   },
   data(){
     return {
@@ -173,6 +179,7 @@ export default {
   // },
   methods: {
     ...mapActions('tipoDiscapacidad',['getAllTipoD']),
+    ...mapMutations('tipoDiscapacidad', ['cleanAllTipoD']),
     count(){
       axios.get('/tipoDiscapacidad/contar')
       .then((value) => {
@@ -192,14 +199,20 @@ export default {
     this.paginacion.pag = to.params.pag;
     next(this.getAllTipoD({ pag: to.params.pag, buscar: ''}));
   },
-  // beforeRouteLeave (to, from, next) {
-  //   const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-  //   if (answer) {
-  //     next()
-  //   } else {
-  //     next(false)
-  //   }
-  // },
+  beforeRouteLeave (to, from, next) {
+    const answer = window.confirm('Do you really want to leave?')
+    if (answer) {
+      next(this.cleanAllTipoD())
+    } else {
+      next(false)
+    }
+  },
+  created() {
+    //do something after creating vue instance
+    bus.$on('actualizarCount', (bol) => {
+            if(bol) this.count();
+        })
+  },
   mounted() {
     //do something after mounting vue instance
     this.getAllTipoD({ pag: this.$route.params.pag, buscar: ''});
