@@ -61,11 +61,11 @@ export default {
 
   /* MENU */
   aside#menu-desplegable {
-  width: 22vh;
+  width: 30vh;
   }
 
   aside.menu-oculto {
-  left: -22vh;
+  left: -30vh;
   /*Chrome, Safari*/
   -webkit-transition: ease-in-out left 1s;
   /*Firefox*/

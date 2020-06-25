@@ -26,8 +26,7 @@
               <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal" @click="editTipoD(td)">
                 <span class="fas fa-pencil-alt"></span> Edit
               </button>
-              <!-- <button class="btn btn-danger" @click="deleteTipoD(td.id)"> -->
-              <button class="btn btn-danger">
+              <button class="btn btn-danger" @click="deleteTipoD({id: td.id, pag: pag, vista: vista})">
                 <span class="fas fa-trash"></span> Delete
               </button>
             </td>
@@ -50,12 +49,13 @@ export default {
     all: 'tipoDiscapacidad/getAllTipoD'
   }),
   methods: {
-    ...mapActions('tipoDiscapacidad',['getAllTipoD']),
+    ...mapActions('tipoDiscapacidad',['getAllTipoD', 'deleteTipoD']),
     ...mapMutations('tipoDiscapacidad', ['editTipoD'])
   },
   created() {
     //do something after creating vue instance
     this.getAllTipoD({ pag: this.$route.params.pag, buscar: ''});
+    window.content.document.title = "Tipo de Discapacidad";
   }
 }
 </script>

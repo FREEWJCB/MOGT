@@ -8,7 +8,9 @@
             <h2>List of Type Discapacity</h2>
           </div>
           <div class="col-3 mt-2">
-            Maestro>Tipo de Discapacidad
+            <small>
+              <span class="fas fa-home"></span> Maestro <span class="text-secondary">> Tipo de Discapacidad</span>
+            </small>
           </div>
         </div>
         <div class="row justify-content-between">

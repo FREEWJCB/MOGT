@@ -37,6 +37,9 @@ const tipoDiscapacidad = {
     deleteLastAllTipoD(state){
       state.allTipoD.pop();
     },
+    deleteTipoD(state, id){
+      state.allTipoD = state.allTipoD.filter((item) => {return item.id !== id;});
+    },
     cleanTipoD(state){
       state.tipoDiscapacidad.id = 0;
       state.tipoDiscapacidad.tipo_d = '';
@@ -95,7 +98,19 @@ const tipoDiscapacidad = {
               // this.clean();
             })
             .catch((err) => {console.error(err);})
-        }
+        },
+        deleteTipoD({commit, dispatch, state}, parametros){
+           axios.delete(`/tipoDiscapacidad/${parametros.id}`)
+             .then((value) => {
+              if (state.allTipoD.length == parametros.vista) {
+                dispatch('getAllTipoD', {pag: parametros.pag, buscar: ''});
+              } else {
+                commit('deleteTipoD', parametros.id);
+              }
+              bus.actualizarTotal( true ); // Para que verifique el total de Tipo de Discapacidad
+             })
+             .catch((err) => {console.error(err);})
+         }
   }
 }
 
