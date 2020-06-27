@@ -60,20 +60,20 @@ const tipoDiscapacidad = {
             .then((value) => {commit("loadingAllTD", {value: value.data});})
             .catch((err) => {console.error(err);})
     },
-    createTipoD({commit, state}){
+    createTipoD({commit, state}, vista){
         axios.post('/tipoDiscapacidad', {tipo_d: state.tipoDiscapacidad.tipo_d})
           .then((value) => {
             commit('cleanTipoD');
             commit("addAllTipoD", value.data);
-            // if(this.paginacion.pag != this.paginacion.paginas.length){
-            commit("deleteLastAllTipoD");
-            // }
-            // this.clean();
-            // this.count();
-            // this.message.unshift({
-            //   tipo: 'alert-success',
-            //   msg: `Created <strong>${value.data.tipo_d}!</strong>.`
-            // });
+
+            if(state.allTipoD.length >= vista){
+              commit("deleteLastAllTipoD");
+            }
+
+            bus.alertMenssage({
+              tipo: 'alert-success',
+              msg: `Created <strong>${value.data.tipo_d}!</strong>`
+            });
             bus.actualizarTotal( true ); // Para que verifique el total de Tipo de Discapacidad
           })
           .catch((err) => {console.error(err);})
@@ -85,17 +85,17 @@ const tipoDiscapacidad = {
             .then((value) => {
               state.allTipoD.forEach((item, i) => {
                 if(item.id == state.tipoDiscapacidad.id){
-                  // state.allTipoD[i].tipo_d = state.tipoDiscapacidad.tipo_d;
+
                   commit('updategAllTD', {index: i, value: state.tipoDiscapacidad.tipo_d});
                 }
               });
-              commit('cleanTipoD');
-              // this.message.unshift({
-              //   tipo: 'alert-info',
-              //   msg: `Updated <strong>${this.tipoDiscapacidad.tipo_d}!</strong>.`
-              // });
 
-              // this.clean();
+              bus.alertMenssage({
+                tipo: 'alert-primary',
+                msg: `Updated <strong>${state.tipoDiscapacidad.tipo_d}!</strong>`
+              });
+
+              commit('cleanTipoD');
             })
             .catch((err) => {console.error(err);})
         },
@@ -107,6 +107,10 @@ const tipoDiscapacidad = {
               } else {
                 commit('deleteTipoD', parametros.id);
               }
+              bus.alertMenssage({
+                tipo: 'alert-info',
+                msg: `Deleted Type Discapacity!</strong>`
+              });
               bus.actualizarTotal( true ); // Para que verifique el total de Tipo de Discapacidad
              })
              .catch((err) => {console.error(err);})

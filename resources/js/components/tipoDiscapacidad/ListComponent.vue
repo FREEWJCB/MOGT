@@ -45,9 +45,11 @@ export default {
     pag: Number,
     vista: Number
   },
-  computed: mapGetters({
-    all: 'tipoDiscapacidad/getAllTipoD'
-  }),
+  computed: {
+    ...mapGetters({
+      all: 'tipoDiscapacidad/getAllTipoD'
+    }),
+  },
   methods: {
     ...mapActions('tipoDiscapacidad',['getAllTipoD', 'deleteTipoD']),
     ...mapMutations('tipoDiscapacidad', ['editTipoD'])
@@ -55,7 +57,7 @@ export default {
   created() {
     //do something after creating vue instance
     this.getAllTipoD({ pag: this.$route.params.pag, buscar: ''});
-    window.content.document.title = "Tipo de Discapacidad";
+    document.title = "Tipo de Discapacidad";
   }
 }
 </script>

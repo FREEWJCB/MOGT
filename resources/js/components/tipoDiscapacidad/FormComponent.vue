@@ -23,7 +23,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="clean">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal"
+          <button type="button" class="btn btn-primary"
           v-if="id === 0"
           @click="save"
           :disabled='errors.any() || !isComplete'>Save</button>
@@ -40,6 +40,10 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
+  props: {
+    vista: Number,
+    required: true
+  },
   computed: {
     id(){
       return  this.$store.state.tipoDiscapacidad.tipoDiscapacidad.id;
@@ -60,7 +64,7 @@ export default {
     ...mapActions('tipoDiscapacidad', ['createTipoD', 'updateTipoD']),
     ...mapMutations('tipoDiscapacidad', ['cleanTipoD']),
     save(){
-      this.createTipoD();
+      this.createTipoD(this.vista);
       setTimeout(() => this.clean(), 1000);
     },
     update(){

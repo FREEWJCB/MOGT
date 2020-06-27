@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- Error Messages -->
+    <error-message/>
     <main class="mt-5">
       <div class="container bg-white">
         <div class="row justify-content-between">
@@ -35,11 +36,13 @@
       </div>
     </main>
     <!-- Modal -->
-    <formulario/>
+    <formulario
+    :vista="paginacion.vista"/>
   </div>
 </template>
 
 <script>
+import ErrorMessage from '../theme/MessageComponent.vue'
 import Search from '../theme/SearchComponent.vue'
 import Pagination from '../theme/PaginationComponent.vue'
 import List from './ListComponent.vue'
@@ -51,7 +54,8 @@ export default {
     Search,
     List,
     Pagination,
-    Formulario
+    Formulario,
+    ErrorMessage
   },
   data(){
     return {
@@ -63,122 +67,6 @@ export default {
       },
     }
   },
-  // computed: {
-  //   isComplete(){
-  //     return (this.tipoDiscapacidad.tipo_d == '')?false:true;
-  //   }
-  // },
-  // watch: {
-  //   // cuando 'busqueda' cambie, se ejecutará esta función
-  //   busqueda: function (news) {
-  //     this.getAll();
-  //     if(this.busqueda != ''){
-  //       this.paginacion.total = 1;
-  //     } else {
-  //       this.count();
-  //     }
-  //   }
-  // },
-  // methods: {
-  //   getAll(){
-  //     axios.get('/tipoDiscapacidad', {
-  //       params: {
-  //         buscar: this.busqueda,
-  //         pag: this.paginacion.pag,
-  //       }
-  //     })
-  //       .then((value) => {this.tiposDiscapacidad = value.data;})
-  //       .catch((err) => {console.error(err);})
-  //   },
-  //   Buscar(){
-  //     this.getAll();
-  //     if(this.busqueda != ''){
-  //       this.paginacion.total = 1;
-  //     } else {
-  //       this.count();
-  //     }
-  //   },
-  //   createTipoD(){
-  //     console.log(this.tipoDiscapacidad);
-  //     axios.post('/tipoDiscapacidad', {tipo_d: this.tipoDiscapacidad.tipo_d})
-  //       .then((value) => {
-  //         this.tiposDiscapacidad.unshift({
-  //           id: value.data.id,
-  //           tipo_d: value.data.tipo_d,
-  //           created_at: value.data.created_at,
-  //           updated_at: value.data.updated_at,
-  //         });
-  //         if(this.paginacion.pag != this.paginacion.paginas.length){
-  //           this.tiposDiscapacidad.pop();
-  //         }
-  //         this.clean();
-  //         this.count();
-  //         this.message.unshift({
-  //           tipo: 'alert-success',
-  //           msg: `Created <strong>${value.data.tipo_d}!</strong>.`
-  //         });
-  //       })
-  //       .catch((err) => {console.error(err);})
-  //   },
-  //   editTipoD(item){
-  //     this.tipoDiscapacidad.id = item.id;
-  //     this.tipoDiscapacidad.tipo_d = item.tipo_d;
-  //   },
-  //   updateTipoD(){
-  //     axios.put(`/tipoDiscapacidad/${this.tipoDiscapacidad.id}`,{
-  //       tipo_d: this.tipoDiscapacidad.tipo_d
-  //     })
-  //       .then((value) => {
-  //         console.log(this.tipoDiscapacidad.index);
-  //         this.tiposDiscapacidad.forEach((item, i) => {
-  //           if(item.id == this.tipoDiscapacidad.id){
-  //             this.tiposDiscapacidad[i].tipo_d = this.tipoDiscapacidad.tipo_d;
-  //           }
-  //         });
-  //         this.message.unshift({
-  //           tipo: 'alert-info',
-  //           msg: `Updated <strong>${this.tipoDiscapacidad.tipo_d}!</strong>.`
-  //         });
-  //
-  //         this.clean();
-  //       })
-  //       .catch((err) => {console.error(err);})
-  //   },
-  //   deleteTipoD(id){
-  //     axios.delete(`/tipoDiscapacidad/${id}`)
-  //       .then((value) => {
-  //         this.tiposDiscapacidad = this.tiposDiscapacidad.filter((item) => {
-  //           if(item.id == id){
-  //             this.message.unshift({
-  //               tipo: 'alert-danger',
-  //               msg: `Delete <strong>${item.tipo_d}!</strong>.`
-  //             });
-  //           }
-  //           return item.id !== id;
-  //         });
-  //         this.count();
-  //       })
-  //       .catch((err) => {console.error(err);})
-  //   },
-  //   clean(){
-  //     this.tipoDiscapacidad.id = 0;
-  //     this.tipoDiscapacidad.tipo_d = '';
-  //     // Reset errors
-  //     this.$validator.reset()
-  //   },
-  //   count(){
-  //     axios.get('/tipoDiscapacidad/contar')
-  //       .then((value) => {
-  //         this.paginacion.total = value.data;
-  //         this.paginacion.paginas = [];
-  //         for (var i = 0; i < (value.data / this.paginacion.vista); i++) {
-  //           this.paginacion.paginas.push(i);
-  //         }
-  //       })
-  //       .catch((err) => {console.error(err);})
-  //
-  //   }
-  // },
   methods: {
     ...mapActions('tipoDiscapacidad',['getAllTipoD']),
     ...mapMutations('tipoDiscapacidad', ['cleanAllTipoD']),

@@ -160,4 +160,7 @@ export default {
 </script>
 
 <style scoped>
+  aside ul li {
+    cursor: pointer;
+  }
 </style>
