@@ -57,7 +57,6 @@ export default {
   created() {
     //do something after creating vue instance
     this.getAllTipoD({ pag: this.$route.params.pag, buscar: ''});
-    document.title = "Tipo de Discapacidad";
   }
 }
 </script>

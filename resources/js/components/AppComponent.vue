@@ -44,53 +44,6 @@ export default {
   body {
     background-color: #f4f3f3;
   }
-  /* NAV */
-  nav#navegacion {
-    background: #8E0E00;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  }
-
-  nav div.col-2 span {
-  cursor: pointer;
-  }
-
-  nav div p {
-  margin: 0px;
-  }
-
-  /* MENU */
-  aside#menu-desplegable {
-  width: 30vh;
-  }
-
-  aside.menu-oculto {
-  left: -30vh;
-  /*Chrome, Safari*/
-  -webkit-transition: ease-in-out left 1s;
-  /*Firefox*/
-  -moz-transition: ease-in-out left 1s;
-  /*Opera*/
-  -o-transition: ease-in-out left 1s;
-  /*Standard*/
-  transition: ease-in-out left 1s;
-  }
-
-  aside.menu-desplegado {
-  left: 0px;
-  /*Chrome, Safari*/
-  -webkit-transition: ease-in-out left 1s;
-  /*Firefox*/
-  -moz-transition: ease-in-out left 1s;
-  /*Opera*/
-  -o-transition: ease-in-out left 1s;
-  /*Standard*/
-  transition: ease-in-out left 1s;
-  }
-
-  aside ul {
-  overflow: auto;
-  }
 
   /* MAIN */
   main div.container {

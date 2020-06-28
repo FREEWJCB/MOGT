@@ -28,6 +28,11 @@ const enrutador = new VueRouter({
   mode: 'history'
 })
 
+enrutador.beforeEach((to, from, next) => {
+  document.title = to.meta.title;
+  next();
+});
+
 // Cambiando idioma
 Validator.localize('es', es);
 /**

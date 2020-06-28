@@ -1,15 +1,16 @@
 <template>
   <div class="">
+    <div :class="sabanaOculta" @click="ocultarMenu(menuOculto)"></div>
     <nav>
       <nav class="navbar navbar-white bg-white" id="navegacion">
         <div class="row w-100 justify-content-between">
-          <div class="col-2">
+          <div class="col-2" style="z-index: 99;">
             <router-link :to="{ name: 'theme' }">
               <a class="navbar-brand text-white">SIDETH</a>
             </router-link>
             <span class="fas fa-align-justify text-white" @click="ocultarMenu(menuOculto)"></span>
           </div>
-          <div class="nav-item dropdown col-2 float-right text-center text-dark">
+          <div class="nav-item dropdown col-2 float-right text-center text-dark" style="z-index: 99;">
             <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="fas fa-user text-white"></span>  {{ auth.name || 'Usuario' }}
             </a>
@@ -51,53 +52,55 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
-                <span class="fas fa-clinic-medical"></span> Discapacidad
-              </a>
+              <router-link :to="{ name: 'discapacidad', params: { pag: 1} }">
+                <a class="nav-link mr-4 text-white" disabled="true" tabindex="-1" aria-disabled="true">
+                  <span class="fas fa-clinic-medical"></span> Discapacidad
+                </a>
+              </router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-clinic-medical"></span> Tipo de Alergias
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-clinic-medical"></span> Alergias
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-map-marked-alt"></span> Estado
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-map-marked-alt"></span> Municipio
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-church"></span> Parroquia
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-graduation-cap"></span> Estudiante
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-user-tie"></span> Representante
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-user-tie"></span> Empleado
               </a>
             </li>
           </ul>
         </li>
-        <li class="nav-item accordion" id="accordionTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <li class="nav-item accordion disabled" id="accordionTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <a class="nav-link mr-4" disabled="true">
               <span class="fas fa-clipboard"></span>
               Procesos
@@ -113,7 +116,7 @@
             <li class="nav-item">
               <a class="nav-link mr-4 text-dark" disabled="true">Link</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li>
           </ul>
@@ -124,7 +127,7 @@
             <span class="fas fa-angle-down"></span>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item disabled">
           <a class="nav-link mr-4 disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
        <div class="mb-0 float-bottom">
@@ -140,6 +143,7 @@ export default {
   data(){
     return {
       menuOculto: 'menu-oculto',
+      sabanaOculta: 'sabana-oculta',
       auth: {},
     }
   },
@@ -147,8 +151,10 @@ export default {
     ocultarMenu(menu) {
       if(menu == 'menu-oculto'){
         this.menuOculto = 'menu-desplegado';
+        this.sabanaOculta = 'sabana-desplegada';
       }else{
         this.menuOculto = 'menu-oculto';
+        this.sabanaOculta = 'sabana-oculta';
       }
     }
   },
@@ -160,7 +166,80 @@ export default {
 </script>
 
 <style scoped>
+
+/* NAV */
+  nav#navegacion {
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+
+  nav div.col-2 span {
+    cursor: pointer;
+  }
+
+  nav div p {
+    margin: 0px;
+  }
+
+  /* MENU */
+  aside#menu-desplegable {
+    width: 30vh;
+  }
+
+  aside.menu-oculto {
+    left: -30vh;
+    /*Chrome, Safari*/
+    -webkit-transition: ease-in-out left 0.7s;
+    /*Firefox*/
+    -moz-transition: ease-in-out left 0.7s;
+    /*Opera*/
+    -o-transition: ease-in-out left 0.7s;
+    /*Standard*/
+    transition: ease-in-out left 0.7s;
+  }
+
+  aside.menu-desplegado {
+    left: 0px;
+    /*Chrome, Safari*/
+    -webkit-transition: ease-in-out left 0.7s;
+    /*Firefox*/
+    -moz-transition: ease-in-out left 0.7s;
+    /*Opera*/
+    -o-transition: ease-in-out left 0.7s;
+    /*Standard*/
+    transition: ease-in-out left 0.7s;
+  }
+
+  aside ul {
+  overflow: auto;
+  }
+
   aside ul li {
     cursor: pointer;
+  }
+
+  .disabled {
+    cursor: not-allowed;
+  }
+
+  aside ul li.nav-item:hover {
+    background-color: #474d5399 !important;
+  }
+
+  .sabana-desplegada{
+    z-index: 40;
+    min-width: 100%;
+    min-height: 100%;
+    position: fixed;
+    background: #00000070;
+  }
+
+  .sabana-oculta{
+    z-index: 40;
+    min-width: 0%;
+    min-height: 100%;
+    position: fixed;
+    background: #00000070;
   }
 </style>

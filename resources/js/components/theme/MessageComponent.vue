@@ -3,6 +3,7 @@
     <div v-for="msg of message" :key="msg.key">
       <div class="alert alert-dismissible fade show mb-0" role="alert"
       :class="msg.tipo">
+        <span :class="msg.icon"></span> 
         <span v-html="msg.msg"></span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="cleanMsg(msg.key)">
           <span aria-hidden="true">&times;</span>

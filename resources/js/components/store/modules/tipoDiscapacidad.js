@@ -10,9 +10,11 @@ const tipoDiscapacidad = {
     }
   },
   mutations: {
+    // Cargar datos
     loadingAllTD(state, payload){
       state.allTipoD = payload.value;
     },
+    // Modificar Datos
     updateTipoD(state, message) {
       state.tipoDiscapacidad.tipo_d = message;
     },
@@ -22,6 +24,7 @@ const tipoDiscapacidad = {
     updategAllTD(state, payload){
       state.allTipoD[payload.index].tipo_d = payload.value;
     },
+    // Editar Datos
     editTipoD(state, item){
       state.tipoDiscapacidad.id = item.id;
       state.tipoDiscapacidad.tipo_d = item.tipo_d;
@@ -34,12 +37,14 @@ const tipoDiscapacidad = {
         updated_at: message.updated_at,
       })
     },
+    // Eliminar Datos
     deleteLastAllTipoD(state){
       state.allTipoD.pop();
     },
     deleteTipoD(state, id){
       state.allTipoD = state.allTipoD.filter((item) => {return item.id !== id;});
     },
+    // Restablecer los datos
     cleanTipoD(state){
       state.tipoDiscapacidad.id = 0;
       state.tipoDiscapacidad.tipo_d = '';
@@ -47,9 +52,10 @@ const tipoDiscapacidad = {
     cleanAllTipoD: state => state.allTipoD = []
   },
   getters: {
-    getAllTipoD: state => state.allTipoD
+    getAllTipoD: state => state.allTipoD // Obtenr todos los registro
   },
   actions: {
+    // Read
     getAllTipoD: ({commit, state}, parametros) =>{
       axios.get('/tipoDiscapacidad', {
             params: {
@@ -58,8 +64,15 @@ const tipoDiscapacidad = {
             }
           })
             .then((value) => {commit("loadingAllTD", {value: value.data});})
-            .catch((err) => {console.error(err);})
+            .catch((err) => {
+              bus.alertMenssage({
+                icon: 'fas fa-skull-crossbones',
+                tipo: 'alert-danger',
+                msg: `Error: <strong>${err.request.status}  ${err.request.statusText}!</strong>`
+              });
+            })
     },
+    // Create
     createTipoD({commit, state}, vista){
         axios.post('/tipoDiscapacidad', {tipo_d: state.tipoDiscapacidad.tipo_d})
           .then((value) => {
@@ -71,13 +84,21 @@ const tipoDiscapacidad = {
             }
 
             bus.alertMenssage({
+              icon: 'fas fa-check',
               tipo: 'alert-success',
               msg: `Created <strong>${value.data.tipo_d}!</strong>`
             });
             bus.actualizarTotal( true ); // Para que verifique el total de Tipo de Discapacidad
           })
-          .catch((err) => {console.error(err);})
+          .catch((err) => {
+            bus.alertMenssage({
+              icon: 'fas fa-skull-crossbones',
+              tipo: 'alert-danger',
+              msg: `Error: <strong>${err.request.status}  ${err.request.statusText}!</strong>`
+            });
+          })
       },
+      // Update
       updateTipoD({commit, state}){
           axios.put(`/tipoDiscapacidad/${state.tipoDiscapacidad.id}`,{
             tipo_d: state.tipoDiscapacidad.tipo_d
@@ -91,14 +112,22 @@ const tipoDiscapacidad = {
               });
 
               bus.alertMenssage({
+                icon: 'fas fa-thumbs-up',
                 tipo: 'alert-primary',
                 msg: `Updated <strong>${state.tipoDiscapacidad.tipo_d}!</strong>`
               });
 
               commit('cleanTipoD');
             })
-            .catch((err) => {console.error(err);})
+            .catch((err) => {
+              bus.alertMenssage({
+                icon: 'fas fa-skull-crossbones',
+                tipo: 'alert-danger',
+                msg: `Error: <strong>${err.request.status}  ${err.request.statusText}!</strong>`
+              });
+            })
         },
+        // Delete
         deleteTipoD({commit, dispatch, state}, parametros){
            axios.delete(`/tipoDiscapacidad/${parametros.id}`)
              .then((value) => {
@@ -108,12 +137,19 @@ const tipoDiscapacidad = {
                 commit('deleteTipoD', parametros.id);
               }
               bus.alertMenssage({
+                icon: 'fas fa-info-circle',
                 tipo: 'alert-info',
                 msg: `Deleted Type Discapacity!</strong>`
               });
               bus.actualizarTotal( true ); // Para que verifique el total de Tipo de Discapacidad
              })
-             .catch((err) => {console.error(err);})
+             .catch((err) => {
+               bus.alertMenssage({
+                 icon: 'fas fa-skull-crossbones',
+                 tipo: 'alert-danger',
+                 msg: `Error: <strong>${err.request.status}  ${err.request.statusText}!</strong>`
+               });
+             })
          }
   }
 }
