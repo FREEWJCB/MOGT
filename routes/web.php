@@ -61,3 +61,6 @@ Route::get('/auth', function(){
     ],400);
   }
 });
+
+// Cuando no encuentre la pagina se redirigira a esta
+Route::get('/{any}', 'ThemeController@index')->where('any', '.*');
