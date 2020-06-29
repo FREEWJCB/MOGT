@@ -7,8 +7,9 @@ const discapacidad = {
     discapacidad: {
       id: 0,
       discapacidad: '',
-      descripciónes: '',
-      tipoDiscapacidadId: 0
+      descripciones: '',
+      tipoDiscapacidadId: 0,
+      tipo_d: ''
     }
   },
   mutations: {
@@ -23,30 +24,36 @@ const discapacidad = {
     updateDiscapacidad(state, message){
       state.discapacidad.discapacidad = message;
     },
-    updateDescaripciones(state, message){
-      state.discapacidad.descripciónes = message;
+    updateDescripciones(state, message){
+      state.discapacidad.descripciones = message;
+    },
+    updateTipoDiscapacidadId(state, message){
+      state.discapacidad.tipoDiscapacidadId = message;
     },
     updateTipoDiscapacidad(state, message){
-      state.discapacidad.tipoDiscapacidad = message;
+      state.discapacidad.tipo_d = message;
     },
     updategAllDiscapacidad(state, payload){
       state.allDiscapacidad[payload.index].discapacidad = payload.value.discapacidad;
-      state.allDiscapacidad[payload.index].descripciónes = payload.value.descripciones;
-      state.allDiscapacidad[payload.index].tipoDiscapacidad = payload.value.tipoDiscapacidad;
+      state.allDiscapacidad[payload.index].descripciones = payload.value.descripciones;
+      state.allDiscapacidad[payload.index].tipoDiscapacidadId = payload.value.tipoDiscapacidadId;
+      state.allDiscapacidad[payload.index].tipo_d = payload.value.tipo_d;
     },
     // Editar Datos
     editDiscapacidad(state, item){
       state.discapacidad.id = item.id;
       state.discapacidad.discapacidad = item.discapacidad;
-      state.discapacidad.descripciónes = item.descripciónes;
-      state.discapacidad.tipoDiscapacidad = item.tipoDiscapacidad;
+      state.discapacidad.descripciones = item.descripciones;
+      state.discapacidad.tipoDiscapacidadId = item.tipoDiscapacidad_id;
+      state.discapacidad.tipo_d = item.tipo_d;
     },
     addAllDiscapacidad(state, message){
       state.allDiscapacidad.unshift({
         id: message.id,
         discapacidad: message.discapacidad,
-        descripciónes: message.descripciónes,
-        tipoDiscapacidad: message.tipoDiscapacidad_id,
+        descripciones: message.descripciones,
+        tipoDiscapacidadId: message.tipoDiscapacidad_id,
+        tipo_d: state.discapacidad.tipo_d,
         created_at: message.created_at,
         updated_at: message.updated_at,
       })
@@ -60,11 +67,13 @@ const discapacidad = {
     },
     // Restablecer los datos
     cleanDiscapacidad(state){
-        state.discapacidad.id = item.id;
-        state.discapacidad.discapacidad = item.discapacidad;
-        state.discapacidad.descripciónes = item.descripciónes;
-        state.discapacidad.tipoDiscapacidad = item.tipoDiscapacidad;
-    }
+        state.discapacidad.id = 0;
+        state.discapacidad.discapacidad = '';
+        state.discapacidad.descripciones = '';
+        state.discapacidad.tipoDiscapacidadId = 0;
+        state.discapacidad.tipo_d = '';
+    },
+    cleanAllDiscapacidad: state => state.allDiscapacidad = []
   },
   getters: {
     getAllDiscapacidad: state => state.allDiscapacidad // Obtenr todos los registro
@@ -75,11 +84,11 @@ const discapacidad = {
         axios.post('/discapacidad', {
           discapacidad: state.discapacidad.discapacidad,
           descripciones: state.discapacidad.descripciones,
-          tipoDiscapacidad_id: state.discapacidad.tipoDiscapacidad,
+          tipoDiscapacidad_id: state.discapacidad.tipoDiscapacidadId,
         })
           .then((value) => {
-            commit('cleanDiscapacidad');
             commit("addAllDiscapacidad", value.data);
+              commit('cleanDiscapacidad');
 
             if(state.addAllDiscapacidad.length >= vista){
               commit("deleteLastAllDiscapacidad");
@@ -90,7 +99,7 @@ const discapacidad = {
               tipo: 'alert-success',
               msg: `Created <strong>${value.data.discapacidad}!</strong>`
             });
-            bus.actualizarTotal( true ); // Para que verifique el total de Tipo de Discapacidad
+            bus.actualizarTotal( true ); // Para que verifique el total de Discapacidad
           })
           .catch((err) => {
             bus.alertMenssage({
@@ -101,14 +110,17 @@ const discapacidad = {
           })
       },
     // Read
-    getAllTipoD({commit, state}, parametros){
+    getAllDiscapacidades({commit, state}, parametros){
       axios.get('/discapacidad', {
             params: {
               buscar: parametros.buscar,
               pag: parametros.pag,
             }
           })
-            .then((value) => {commit("loadingAllDiscapacidad", {value: value.data});})
+            .then((value) => {
+              commit("loadingAllDiscapacidad", {value: value.data.discapacidades});
+              bus.$emit('allTipoDiscapacidad', value.data.tipos_d);
+            })
             .catch((err) => {
               bus.alertMenssage({
                 icon: 'fas fa-skull-crossbones',
@@ -118,11 +130,11 @@ const discapacidad = {
             })
     },
     // Update
-    updateTipoD({commit, state}){
+    updateDiscapacidad({commit, state}){
         axios.put(`/discapacidad/${state.discapacidad.id}`,{
           discapacidad: state.discapacidad.discapacidad,
           descripciones: state.discapacidad.descripciones,
-          tipoDiscapacidad_id: state.discapacidad.tipoDiscapacidad,
+          tipoDiscapacidad_id: state.discapacidad.tipoDiscapacidadId,
         })
           .then((value) => {
             state.allDiscapacidad.forEach((item, i) => {
@@ -130,9 +142,10 @@ const discapacidad = {
 
                 commit('updategAllDiscapacidad', {
                   index: i, value: {
-                    state.discapacidad.discapacidad,
-                    state.discapacidad.descripciones,
-                    state.discapacidad.tipoDiscapacidad
+                    discapacidad: state.discapacidad.discapacidad,
+                    descripciones: state.discapacidad.descripciones,
+                    tipoDiscapacidadId: state.discapacidad.tipoDiscapacidadId,
+                    tipo_d: state.discapacidad.tipo_d
                   }
                 });
               }
@@ -156,10 +169,10 @@ const discapacidad = {
       },
     // Delete
     deleteDiscapacidad({commit, dispatch, state}, parametros){
-       axios.delete(`/tipoDiscapacidad/${parametros.id}`)
+       axios.delete(`/discapacidad/${parametros.id}`)
          .then((value) => {
           if (state.allDiscapacidad.length == parametros.vista) {
-            dispatch('getAllDiscapacidad', {pag: parametros.pag, buscar: ''});
+            dispatch('getAllDiscapacidades', {pag: parametros.pag, buscar: ''});
           } else {
             commit('deleteDiscapacidad', parametros.id);
           }

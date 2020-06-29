@@ -33,6 +33,8 @@ Route::resource('tipoAlergia','TipoAlergiaController');
 
 Route::resource('usuario','UsuarioController');
 
+Route::get("/discapacidad/contar", "DiscapacidadController@contar");
+
 Route::resource('discapacidad','DiscapacidadController');
 
 Route::get("/tipoDiscapacidad/contar", "TipoDiscapacidadController@contar");

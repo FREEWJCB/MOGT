@@ -13,6 +13,6 @@ class Discapacidad extends Model
     ];
 
     public function tipo(){ 
-        return $this->belongsTo('App\tipo_discapacidad','tipoDiscapacidad_id'); //Pertenece a un Tipo de Discapacidad.
+        return $this->belongsTo(Tipo_discapacidad::class); //Pertenece a un Tipo de Discapacidad.
     }
 }

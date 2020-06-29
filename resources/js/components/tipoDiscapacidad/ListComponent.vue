@@ -51,12 +51,8 @@ export default {
     }),
   },
   methods: {
-    ...mapActions('tipoDiscapacidad',['getAllTipoD', 'deleteTipoD']),
+    ...mapActions('tipoDiscapacidad',['deleteTipoD']),
     ...mapMutations('tipoDiscapacidad', ['editTipoD'])
-  },
-  created() {
-    //do something after creating vue instance
-    this.getAllTipoD({ pag: this.$route.params.pag, buscar: ''});
   }
 }
 </script>

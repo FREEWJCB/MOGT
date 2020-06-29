@@ -22,7 +22,7 @@
           </div>
           <!-- Search -->
           <search
-          :Buscar="getAllTipoD"/>
+          :Buscar="getAllDiscapacidades"/>
         </div>
         <!-- Table -->
         <list
@@ -31,7 +31,7 @@
         :vista="paginacion.vista"/>
         <!-- Pagination -->
         <pagination
-        ruta="tipoDiscapacidad"
+        ruta="discapacidad"
         :paginacion="paginacion"/>
       </div>
     </main>
@@ -61,17 +61,17 @@ export default {
     return {
       paginacion: {
         total: 0,
-        pag: this.$route.params.pag, // obtener parametros de la url
+        pag: Number(this.$route.params.pag), // obtener parametros de la url
         vista: 6, // resultados por ver
         paginas: [],
       },
     }
   },
   methods: {
-    ...mapActions('tipoDiscapacidad',['getAllTipoD']),
-    ...mapMutations('tipoDiscapacidad', ['cleanAllTipoD']),
+    ...mapActions('discapacidad',['getAllDiscapacidades']),
+    ...mapMutations('discapacidad', ['cleanAllDiscapacidad']),
     count(){
-      axios.get('/tipoDiscapacidad/contar')
+      axios.get('/discapacidad/contar')
       .then((value) => {
         this.paginacion.total = value.data;
         this.paginacion.paginas = [];
@@ -92,7 +92,7 @@ export default {
   beforeRouteLeave (to, from, next) {
     const answer = window.confirm('Do you really want to leave?')
     if (answer) {
-      next(this.cleanAllTipoD())
+      next(this.cleanAllDiscapacidad())
     } else {
       next(false)
     }
@@ -105,7 +105,7 @@ export default {
   },
   mounted() {
     //do something after mounting vue instance
-    this.getAllTipoD({ pag: this.$route.params.pag, buscar: ''});
+    this.getAllDiscapacidades({ pag: this.$route.params.pag, buscar: ''});
     this.count();
   },
 }

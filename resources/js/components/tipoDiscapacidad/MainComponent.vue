@@ -61,7 +61,7 @@ export default {
     return {
       paginacion: {
         total: 0,
-        pag: this.$route.params.pag, // obtener parametros de la url
+        pag: Number(this.$route.params.pag), // obtener parametros de la url
         vista: 6, // resultados por ver
         paginas: [],
       },

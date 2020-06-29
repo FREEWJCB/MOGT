@@ -18,12 +18,18 @@ class DiscapacidadController extends Controller
     {
         $nombre = $request->get('buscar');
 
-        $variablesurl = $request->all();
+        $pag = $request->pag;
 
-        $discapacidades = Discapacidad::where('discapacidad','like',"%$nombre%")->orderBy('id','asc')->paginate(4)
-        ->appends($variablesurl);
+        $discapacidades = Discapacidad::select('discapacidads.id', 'discapacidads.discapacidad', 'discapacidads.descripciones', 'discapacidads.tipoDiscapacidad_id', 'tipo_discapacidads.tipo_d')
+        ->join('tipo_discapacidads', 'discapacidads.tipoDiscapacidad_id', '=', 'tipo_discapacidads.id')
+        ->where('discapacidads.discapacidad','like',"%$nombre%")->orderBy('discapacidads.id','desc')
+        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+        ->take(6) //para limitar el resultado
+        ->get();
 
-        return view('discapacidad.list', compact('discapacidades'));
+            $tipos_d = Tipo_discapacidad::all();
+
+        return compact('discapacidades', 'tipos_d');
     }
 
     /**
@@ -50,11 +56,14 @@ class DiscapacidadController extends Controller
             'descripciones' => 'required',
             'tipoDiscapacidad_id' => 'required',
         ]);
-   
-        Discapacidad::create($request->all());
-    
-        return Redirect::to('discapacidad')
-       ->with('mensaje','Tipo de discapacidad creada satisfactoriamente.');
+
+        $discapacidad = new Discapacidad();
+        $discapacidad->discapacidad = $request->discapacidad;
+        $discapacidad->descripciones = $request->descripciones;
+        $discapacidad->tipoDiscapacidad_id = $request->tipoDiscapacidad_id;
+        $discapacidad->save();
+
+        return $discapacidad;
     }
 
     /**
@@ -80,7 +89,7 @@ class DiscapacidadController extends Controller
 
         $where = array('id' => $id);
         $data['discapacidad_info'] = Discapacidad::where($where)->first();
- 
+
         return view('discapacidad.edit',compact('tipos_d'), $data);
     }
 
@@ -98,15 +107,14 @@ class DiscapacidadController extends Controller
             'descripciones' => 'required',
             'tipoDiscapacidad_id' => 'required',
         ]);
-         
+
         $update = [ 'discapacidad' => $request->discapacidad,
                     'descripciones' => $request->descripciones,
                     'tipoDiscapacidad_id' => $request->tipoDiscapacidad_id,
                 ];
-        Discapacidad::where('id',$id)->update($update);
-   
-        return Redirect::to('discapacidad')
-       ->with('success','Discapacidad actualizada satisfactoriamente');
+        $discapacidad = Discapacidad::where('id',$id)->update($update);
+
+        return $discapacidad;
     }
 
     /**
@@ -117,13 +125,32 @@ class DiscapacidadController extends Controller
      */
     public function destroy($id)
     {
-        try {
+
+            try {
             //Eliminar registro
-            Discapacidad::where('id',$id)->delete();
-            return Redirect::to('discapacidad')->with('mensaje','Discapacidad eliminada satisfactoriamente');
-        } 
+            $discapacidad = Discapacidad::where('id',$id)->delete();
+            return $discapacidad;
+        }
         catch (\Exception $e) {
-            return Redirect::to('discapacidad')->with('mensaje','No puede ser eliminada, está siendo usada.');
+          return response()->json([
+              'status' => 'Ocurrio un error!',
+              'msg' => 'No puede ser eliminada, está siendo usada.',
+          ],400);
+    }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function contar(Request $request)
+    {
+        if($request->ajax()){
+
+            $data = Discapacidad::all()->count();
+
+            return $data;
         }
     }
 }
