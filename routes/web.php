@@ -29,6 +29,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('alergia','AlergiaController');
 
+Route::get("/tipoAlergia/contar", "TipoAlergiaController@contar");
+
 Route::resource('tipoAlergia','TipoAlergiaController');
 
 Route::resource('usuario','UsuarioController');

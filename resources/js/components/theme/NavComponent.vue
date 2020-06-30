@@ -59,9 +59,11 @@
               </router-link>
             </li>
             <li class="nav-item disabled">
-              <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
-                <span class="fas fa-clinic-medical"></span> Tipo de Alergias
-              </a>
+              <router-link :to="{ name: 'tipoAlergia', params: { pag: 1 } }">
+                <a class="nav-link mr-4 text-white" disabled="true" tabindex="-1" aria-disabled="true">
+                  <span class="fas fa-clinic-medical"></span> Tipo de Alergias
+                </a>
+              </router-link>
             </li>
             <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">

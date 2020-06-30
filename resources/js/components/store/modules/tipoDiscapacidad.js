@@ -52,7 +52,7 @@ const tipoDiscapacidad = {
     cleanAllTipoD: state => state.allTipoD = []
   },
   getters: {
-    getAllTipoD: state => state.allTipoD // Obtenr todos los registro
+    getAllTipoD: state => state.allTipoD // Obtener todos los registro
   },
   actions: {
     // Read
