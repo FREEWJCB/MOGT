@@ -79,7 +79,7 @@ const tipoDiscapacidad = {
             commit('cleanTipoD');
             commit("addAllTipoD", value.data);
 
-            if(state.allTipoD.length >= vista){
+            if(state.allTipoD.length >= (vista+1)){
               commit("deleteLastAllTipoD");
             }
 

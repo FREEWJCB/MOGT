@@ -87,26 +87,29 @@ const discapacidad = {
           tipoDiscapacidad_id: state.discapacidad.tipoDiscapacidadId,
         })
           .then((value) => {
-            commit("addAllDiscapacidad", value.data);
-              commit('cleanDiscapacidad');
-
-            if(state.addAllDiscapacidad.length >= vista){
-              commit("deleteLastAllDiscapacidad");
-            }
 
             bus.alertMenssage({
               icon: 'fas fa-check',
               tipo: 'alert-success',
               msg: `Created <strong>${value.data.discapacidad}!</strong>`
             });
-            bus.actualizarTotal( true ); // Para que verifique el total de Discapacidad
+            bus.actualizarTotal( true ); // Para que verifique el Discapacidad
+
+            commit("addAllDiscapacidad", value.data);
+            commit('cleanDiscapacidad');
+
+            if(state.allDiscapacidad.length >= (vista+1)){
+              commit("deleteLastAllDiscapacidad");
+            }
           })
           .catch((err) => {
-            bus.alertMenssage({
-              icon: 'fas fa-skull-crossbones',
-              tipo: 'alert-danger',
-              msg: `Error: <strong>${err.request.status}  ${err.request.statusText}!</strong>`
-            });
+            if(err.response !== undefined){
+              bus.alertMenssage({
+                icon: 'fas fa-skull-crossbones',
+                tipo: 'alert-danger',
+                msg: `Error: <strong>${err.response.request.status}  ${err.response.request.statusText}!</strong>`
+              });
+            }
           })
       },
     // Read
@@ -122,11 +125,13 @@ const discapacidad = {
               bus.$emit('allTipoDiscapacidad', value.data.tipos_d);
             })
             .catch((err) => {
-              bus.alertMenssage({
-                icon: 'fas fa-skull-crossbones',
-                tipo: 'alert-danger',
-                msg: `Error: <strong>${err.request.status}  ${err.request.statusText}!</strong>`
-              });
+              if(err.response !== undefined){
+                bus.alertMenssage({
+                  icon: 'fas fa-skull-crossbones',
+                  tipo: 'alert-danger',
+                  msg: `Error: <strong>${err.response.status}  ${err.response.request.statusText}!</strong>`
+                });
+              }
             })
     },
     // Update
@@ -160,11 +165,13 @@ const discapacidad = {
             commit('cleanDiscapacidad');
           })
           .catch((err) => {
-            bus.alertMenssage({
-              icon: 'fas fa-skull-crossbones',
-              tipo: 'alert-danger',
-              msg: `Error: <strong>${err.request.status}  ${err.request.statusText}!</strong>`
-            });
+            if(err.response  !== undefined){
+              bus.alertMenssage({
+                icon: 'fas fa-skull-crossbones',
+                tipo: 'alert-danger',
+                msg: `Error: <strong>${err.response.request.status}  ${err.response.request.statusText}!</strong>`
+              });
+            }
           })
       },
     // Delete
@@ -181,14 +188,16 @@ const discapacidad = {
             tipo: 'alert-info',
             msg: `Deleted Discapacity!</strong>`
           });
-          bus.actualizarTotal( true ); // Para que verifique el total de Tipo de Discapacidad
+          bus.actualizarTotal( true ); // Para que verifique el total de Discapacidad
          })
          .catch((err) => {
-           bus.alertMenssage({
-             icon: 'fas fa-skull-crossbones',
-             tipo: 'alert-danger',
-             msg: `Error: <strong>${err.request.status}  ${err.request.statusText}!</strong>`
-           });
+           if(err.response !== undefined){
+             bus.alertMenssage({
+               icon: 'fas fa-skull-crossbones',
+               tipo: 'alert-danger',
+               msg: `Error: <strong>${err.response.status}  ${err.response.request.statusText}!</strong>`
+             });
+           }
          })
      }
   }

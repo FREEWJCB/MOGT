@@ -87,7 +87,7 @@ export default {
     // react to route changes...
     // don't forget to call next()
     this.paginacion.pag = to.params.pag;
-    next(this.getAllTipoD({ pag: to.params.pag, buscar: ''}));
+    next(this.getAllDiscapacidades({ pag: to.params.pag, buscar: ''}));
   },
   beforeRouteLeave (to, from, next) {
     const answer = window.confirm('Do you really want to leave?')

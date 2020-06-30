@@ -6,6 +6,7 @@ use App\Discapacidad;
 use App\Tipo_discapacidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 
 class DiscapacidadController extends Controller
 {
@@ -20,9 +21,9 @@ class DiscapacidadController extends Controller
 
         $pag = $request->pag;
 
-        $discapacidades = Discapacidad::select('discapacidads.id', 'discapacidads.discapacidad', 'discapacidads.descripciones', 'discapacidads.tipoDiscapacidad_id', 'tipo_discapacidads.tipo_d')
-        ->join('tipo_discapacidads', 'discapacidads.tipoDiscapacidad_id', '=', 'tipo_discapacidads.id')
-        ->where('discapacidads.discapacidad','like',"%$nombre%")->orderBy('discapacidads.id','desc')
+        // Se obtiene los datos de la Vista view_discapacidad
+        $discapacidades = DB::table('view_discapacidad')
+        ->where('discapacidad','like',"%$nombre%")->orderBy('id','desc')
         ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
         ->take(6) //para limitar el resultado
         ->get();
