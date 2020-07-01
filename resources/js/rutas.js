@@ -2,26 +2,43 @@ export const rutas = [
     {
       path: '/home',
       name: 'theme',
-      meta: { Auth: false, title: 'Home' }
+      meta: { Auth: false, title: 'Home' },
+      component: () => import(/* webpackChunkName: "theme" */ `./components/theme/MainComponent.vue`)
     },
     {
       path: '/tipo-discapacidad/:pag',
       meta: { Auth: false, title: 'Tipo de Discapacidad' },
-      name: 'tipoDiscapacidad'
+      name: 'tipoDiscapacidad',
+      component: () => import(/* webpackChunkName: "tipoDiscapacidad" */ `./components/tipoDiscapacidad/MainComponent.vue`)
     },
     {
       path: '/discapacidades/:pag',
       meta: { Auth: false, title: 'Discapacidad' },
-      name: 'discapacidad'
+      name: 'discapacidad',
+      component: () => import(/* webpackChunkName: "discapacidad" */ `./components/discapacidad/MainComponent.vue`)
     },
     {
       path: '/tipo-Alergia/:pag',
       meta: { Auth: false, title: 'Tipo de Alergia' },
-      name: 'tipoAlergia'
+      name: 'tipoAlergia',
+      component: () => import(/* webpackChunkName: "tipoAlergia" */ `./components/tipoAlergia/MainComponent.vue`)
     },
     {
       path: '/alergias/:pag',
       meta: { Auth: false, title: 'Alergia' },
-      name: 'alergia'
+      name: 'alergia',
+      component: () => import(/* webpackChunkName: "alergia" */ `./components/alergia/MainComponent.vue`)
+    },
+    {
+      path: '/cargos/:pag',
+      meta: { Auth: false, title: 'Cargo' },
+      name: 'cargo',
+      component: () => import(/* webpackChunkName: "cargo" */ `./components/cargo/MainComponent.vue`)
+    },
+    {
+      path: '/estados/:pag',
+      meta: { Auth: false, title: 'Estado' },
+      name: 'estado',
+      component: () => import(/* webpackChunkName: "estado" */ `./components/estado/MainComponent.vue`)
     },
 ]

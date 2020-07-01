@@ -25,7 +25,7 @@
             <th scope="row">{{alergia.id}}</th>
             <td>{{alergia.name}}</td>
             <td>{{alergia.nombre}}</td>
-            <td>{{alergia.descripciones}}</td>
+            <td>{{alergia.descripcion}}</td>
             <td class="m-auto">
               <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal" @click="editAlergia(alergia)">
                 <span class="fas fa-pencil-alt"></span> Edit

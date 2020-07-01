@@ -15,14 +15,16 @@ class EstadoController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre = $request->get('buscarpor');
+        $nombre = $request->get('buscar');
 
-        $variablesurl = $request->all();
-        
-        $estados = Estado::where('estado','like',"%$nombre%")->orderBy('id','asc')->paginate(4)
-        ->appends($variablesurl);
+        $pag = $request->pag;
 
-        return view('estado.list', compact('estados'));
+        $estados = Estado::where('estado','like',"%$nombre%")->orderBy('id','desc')
+        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+        ->take(6) //para limitar el resultado
+        ->get();
+
+        return $estados;
     }
 
     /**
@@ -46,11 +48,12 @@ class EstadoController extends Controller
         $request->validate([
             'estado' => 'required',
         ]);
-   
-        Estado::create($request->all());
-    
-        return Redirect::to('estado')
-       ->with('mensaje','Estado creado satisfactoriamente.');
+
+       $estado = new Estado();
+       $estado->estado = $request->estado;
+       $estado->save();
+
+       return $estado;
     }
 
     /**
@@ -90,12 +93,11 @@ class EstadoController extends Controller
         $request->validate([
             'estado' => 'required',
         ]);
-         
+
         $update = ['estado' => $request->estado];
-        Estado::where('id',$id)->update($update);
-   
-        return Redirect::to('estado')
-       ->with('success','Estado actualizado satisfactoriamente');
+        $data = Estado::where('id',$id)->update($update);
+
+        return $data;
     }
 
     /**
@@ -108,11 +110,28 @@ class EstadoController extends Controller
     {
         try {
             //Eliminar registro
-            Estado::where('id',$id)->delete();
-            return Redirect::to('estado')->with('mensaje','Estado eliminado satisfactoriamente');
-        } 
-        catch (\Exception $e) {
-            return Redirect::to('estado')->with('mensaje','No puede ser eliminada, está siendo usado.');
+            return Estado::where('id',$id)->delete();
         }
+        catch (\Exception $e) {
+          return response()->json([
+              'status' => 'Ocurrio un error!',
+              'msg' => 'No puede ser eliminada, está siendo usada.',
+          ],400);
+        }
+    }
+
+    /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function contar(Request $request)
+    {
+      if($request->ajax()){
+
+        $data = Estado::all()->count();
+
+        return $data;
+      }
     }
 }

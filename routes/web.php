@@ -45,6 +45,8 @@ Route::get("/tipoDiscapacidad/contar", "TipoDiscapacidadController@contar");
 
 Route::resource('tipoDiscapacidad','TipoDiscapacidadController');
 
+Route::get("/estado/contar", "EstadoController@contar");
+
 Route::resource('estado','EstadoController');
 
 Route::resource('municipio','MunicipioController');
@@ -54,6 +56,8 @@ Route::post('/parroquia/municipio','ParroquiaController@municipio');
 Route::resource('parroquia','ParroquiaController');
 
 Route::resource('empleado','EmpleadoController');
+
+Route::get("/cargo/contar", "CargoController@contar");
 
 Route::resource('cargo','CargoController');
 

@@ -1,9 +1,11 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/Route-0.js": "/Route-0.js",
-    "/Route-0~Route-1~Route-3~Route-4.js": "/Route-0~Route-1~Route-3~Route-4.js",
-    "/Route-1.js": "/Route-1.js",
-    "/Route-3.js": "/Route-3.js",
-    "/Route-4.js": "/Route-4.js"
+    "/alergia.js": "/alergia.js",
+    "/alergia~cargo~discapacidad~estado~tipoAlergia~tipoDiscapacidad.js": "/alergia~cargo~discapacidad~estado~tipoAlergia~tipoDiscapacidad.js",
+    "/cargo.js": "/cargo.js",
+    "/discapacidad.js": "/discapacidad.js",
+    "/estado.js": "/estado.js",
+    "/tipoAlergia.js": "/tipoAlergia.js",
+    "/tipoDiscapacidad.js": "/tipoDiscapacidad.js"
 }

@@ -12,7 +12,7 @@ class CargoController extends Controller
     // {
     //     $this->middleware('auth');
     // }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +22,14 @@ class CargoController extends Controller
     {
         $cargo = $request->get('buscar');
 
-        $cargos = Cargo::where('nombre','like',"%$cargo%")->orderBy('id','desc')->paginate(5);
-        return view('cargo.list', compact('cargos'));
+        $pag = $request->pag;
+
+        $cargos = Cargo::where('nombre','like',"%$cargo%")->orderBy('id','desc')
+        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+        ->take(6) //para limitar el resultado
+        ->get();
+
+        return $cargos;
     }
 
     /**
@@ -44,16 +50,16 @@ class CargoController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'nombre' => 'required',
-        // ]);
-   
-        Cargo::create($request->all());
 
-        return redirect()->route('cargo.index')->with('datos','Registro Guardado Correctamente!');
-    
-       //  return Redirect::to('cargo')
-       // ->with('success','Cargo Creado Satisfactoriamente.');
+        $request->validate([
+            'nombre' => 'required',
+        ]);
+
+        $cargo = new Cargo();
+        $cargo->nombre = $request->nombre;
+        $cargo->save();
+
+        return $cargo;
     }
 
     /**
@@ -77,7 +83,7 @@ class CargoController extends Controller
     {
         $where = array('id' => $id);
         $data['cargo_info'] = Cargo::where($where)->first();
- 
+
         return view('cargo.edit', $data);
     }
 
@@ -93,11 +99,11 @@ class CargoController extends Controller
         $request->validate([
             'nombre' => 'required',
         ]);
-         
-        $update = ['nombre' => $request->nombre];
-        Cargo::where('id',$id)->update($update);
 
-        return redirect()->route('cargo.index')->with('datos','Registro Editado Correctamente!');
+        $update = ['nombre' => $request->nombre];
+        $data = Cargo::where('id',$id)->update($update);
+
+        return $data;
 
        //  return Redirect::to('marca')
        // ->with('success','Marca Actualizado Satisfactoriamente');
@@ -113,15 +119,28 @@ class CargoController extends Controller
     {
         try {
             //Eliminar registro
-            Cargo::where('id',$id)->delete();
-            return redirect()->route('cargo.index')->with('datos','Registro Eliminado Correctamente!');
-
-            // return Redirect::to('cargo')->with('success','Cargo Eliminado Satisfactoriamente');
-        } 
-        catch (\Exception $e) {
-            return redirect()->route('cargo.index')->with('data','No puede ser eliminado, está siendo usado.');
-
-            // return Redirect::to('cargo')->withSuccess('No puede ser eliminado, está siendo usado.');
+            return Cargo::where('id',$id)->delete();
         }
+        catch (\Exception $e) {
+          return response()->json([
+              'status' => 'Ocurrio un error!',
+              'msg' => 'No puede ser eliminada, está siendo usada.',
+          ],400);
+        }
+    }
+
+    /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function contar(Request $request)
+    {
+      if($request->ajax()){
+
+        $data = Cargo::all()->count();
+
+        return $data;
+      }
     }
 }

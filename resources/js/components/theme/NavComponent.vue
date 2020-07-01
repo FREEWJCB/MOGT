@@ -72,10 +72,12 @@
                 </a>
               </router-link>
             </li>
-            <li class="nav-item disabled">
-              <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
-                <span class="fas fa-map-marked-alt"></span> Estado
-              </a>
+            <li class="nav-item">
+              <router-link :to="{ name: 'estado', params: { pag: 1 } }">
+                <a class="nav-link mr-4 text-white">
+                  <span class="fas fa-map-marked-alt"></span> Estado
+                </a>
+              </router-link>
             </li>
             <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
@@ -97,9 +99,21 @@
                 <span class="fas fa-user-tie"></span> Representante
               </a>
             </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'cargo', params: { pag: 1 } }">
+                <a class="nav-link mr-4 text-white">
+                  <span class="fas fa-user-tie"></span> Cargo
+                </a>
+              </router-link>
+            </li>
             <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
                 <span class="fas fa-user-tie"></span> Empleado
+              </a>
+            </li>
+            <li class="nav-item disabled">
+              <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
+                <span class="fas fa-user"></span> Usuario
               </a>
             </li>
           </ul>
