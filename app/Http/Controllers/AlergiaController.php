@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Alergia;
-use App\Tipo_alergia;
+use App\tipo_alergia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 
 class AlergiaController extends Controller
 {
@@ -16,14 +17,20 @@ class AlergiaController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre = $request->get('buscarpor');
+        $nombre = $request->get('buscar');
 
-        $variablesurl = $request->all();
+        $pag = $request->pag;
 
-        $alergias = Alergia::where('nombre','like',"%$nombre%")->orderBy('id','asc')->paginate(4)
-        ->appends($variablesurl);
+        // Se obtiene los datos de la Vista view_alergia
+        $alergia = DB::table('view_alergia')
+        ->where('nombre','like',"%$nombre%")->orderBy('id','desc')
+        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+        ->take(6) //para limitar el resultado
+        ->get();
 
-        return view('alergia.list', compact('alergias'));
+            $tipos_a = tipo_alergia::all();
+
+        return compact('alergia', 'tipos_a');
     }
 
     /**
@@ -51,10 +58,13 @@ class AlergiaController extends Controller
             'tipoAlergia_id' => 'required',
         ]);
 
-        Alergia::create($request->all());
+       $alergia = new Alergia();
+       $alergia->nombre = $request->nombre;
+       $alergia->descripcion = $request->descripcion;
+       $alergia->tipoAlergia_id = $request->tipoAlergia_id;
+       $alergia->save();
 
-        return Redirect::to('alergia')
-       ->with('mensaje','Tipo de alergia creada satisfactoriamente.');
+       return $alergia;
     }
 
     /**
@@ -103,10 +113,10 @@ class AlergiaController extends Controller
                     'descripcion' => $request->descripcion,
                     'tipoAlergia_id' => $request->tipoAlergia_id,
                 ];
-        Alergia::where('id',$id)->update($update);
 
-        return Redirect::to('alergia')
-       ->with('success','Alergia actualizada satisfactoriamente');
+       $alergia = Alergia::where('id',$id)->update($update);
+
+       return $alergia;
     }
 
     /**
@@ -117,13 +127,31 @@ class AlergiaController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            //Eliminar registro
-            Alergia::where('id',$id)->delete();
-            return Redirect::to('alergia')->with('mensaje','Alergia eliminada satisfactoriamente');
-        }
-        catch (\Exception $e) {
-            return Redirect::to('alergia')->with('mensaje','No puede ser eliminada, está siendo usada.');
+      try {
+        //Eliminar registro
+        $alergia = Alergia::where('id',$id)->delete();
+        return $alergia;
+      }
+      catch (\Exception $e) {
+        return response()->json([
+          'status' => 'Ocurrio un error!',
+          'msg' => 'No puede ser eliminada, está siendo usada.',
+        ],400);
+      }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function contar(Request $request)
+    {
+        if($request->ajax()){
+
+            $data = Alergia::all()->count();
+
+            return $data;
         }
     }
 }

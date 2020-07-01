@@ -12,7 +12,7 @@ class Alergia extends Model
         'tipoAlergia_id',
     ];
 
-    public function tipos(){ 
-        return $this->belongsTo('App\tipo_alergia','tipoAlergia_id'); //Pertenece a un Tipo de Alergia.
+    public function tipos(){
+        return $this->belongsTo(Tipo_alergia::class); //Pertenece a un Tipo de Alergia.
     }
 }

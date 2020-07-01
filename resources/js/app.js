@@ -23,8 +23,16 @@ Vue.use(VeeValidate, {
 });
 Vue.use(VueRouter);
 
+// Modifica cada ruta para llamar cada componente con lazy loading
+const route = rutas.map((route) => {
+  return {
+    ...route, // "Routes"
+    component: () => import(/* webpackChunkName: "Route-[index]" */ `./components/${route.name}/MainComponent.vue`)
+  }
+})
+
 const enrutador = new VueRouter({
-  routes: rutas,
+  routes: route,
   mode: 'history'
 })
 

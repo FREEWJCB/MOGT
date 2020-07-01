@@ -53,22 +53,24 @@
             </li>
             <li class="nav-item">
               <router-link :to="{ name: 'discapacidad', params: { pag: 1} }">
-                <a class="nav-link mr-4 text-white" disabled="true" tabindex="-1" aria-disabled="true">
+                <a class="nav-link mr-4 text-white">
                   <span class="fas fa-clinic-medical"></span> Discapacidad
                 </a>
               </router-link>
             </li>
-            <li class="nav-item disabled">
+            <li class="nav-item">
               <router-link :to="{ name: 'tipoAlergia', params: { pag: 1 } }">
-                <a class="nav-link mr-4 text-white" disabled="true" tabindex="-1" aria-disabled="true">
+                <a class="nav-link mr-4 text-white">
                   <span class="fas fa-clinic-medical"></span> Tipo de Alergias
                 </a>
               </router-link>
             </li>
-            <li class="nav-item disabled">
-              <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
-                <span class="fas fa-clinic-medical"></span> Alergias
-              </a>
+            <li class="nav-item">
+              <router-link :to="{ name: 'alergia', params: { pag: 1 } }">
+                <a class="nav-link mr-4 text-white">
+                  <span class="fas fa-clinic-medical"></span> Alergias
+                </a>
+              </router-link>
             </li>
             <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">

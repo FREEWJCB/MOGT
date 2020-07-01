@@ -27,6 +27,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get("/alergia/contar", "AlergiaController@contar");
+
 Route::resource('alergia','AlergiaController');
 
 Route::get("/tipoAlergia/contar", "TipoAlergiaController@contar");

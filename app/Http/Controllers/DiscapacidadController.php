@@ -127,17 +127,17 @@ class DiscapacidadController extends Controller
     public function destroy($id)
     {
 
-            try {
-            //Eliminar registro
-            $discapacidad = Discapacidad::where('id',$id)->delete();
-            return $discapacidad;
-        }
-        catch (\Exception $e) {
-          return response()->json([
-              'status' => 'Ocurrio un error!',
-              'msg' => 'No puede ser eliminada, está siendo usada.',
-          ],400);
-    }
+      try {
+        //Eliminar registro
+        $discapacidad = Discapacidad::where('id',$id)->delete();
+        return $discapacidad;
+      }
+      catch (\Exception $e) {
+        return response()->json([
+          'status' => 'Ocurrio un error!',
+          'msg' => 'No puede ser eliminada, está siendo usada.',
+        ],400);
+      }
     }
 
     /**
