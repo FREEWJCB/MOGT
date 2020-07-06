@@ -20,6 +20,8 @@ class CargoController extends Controller
      */
     public function index(Request $request)
     {
+      if($request->ajax()){  // si es por una petición ajax
+
         $cargo = $request->get('buscar');
 
         $pag = $request->pag;
@@ -30,6 +32,12 @@ class CargoController extends Controller
         ->get();
 
         return $cargos;
+
+      } else {  // si no se redirige a index
+
+        return view('/theme/index');
+
+      }
     }
 
     /**
@@ -50,16 +58,23 @@ class CargoController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->ajax()){ // si es por una etición ajax
 
-        $request->validate([
+          $request->validate([
             'nombre' => 'required',
-        ]);
+          ]);
 
-        $cargo = new Cargo();
-        $cargo->nombre = $request->nombre;
-        $cargo->save();
+          $cargo = new Cargo();
+          $cargo->nombre = $request->nombre;
+          $cargo->save();
 
-        return $cargo;
+          return $cargo;
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
+        }
     }
 
     /**
@@ -96,6 +111,8 @@ class CargoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if($request->ajax()){ // si es por una etición ajax
+
         $request->validate([
             'nombre' => 'required',
         ]);
@@ -105,8 +122,12 @@ class CargoController extends Controller
 
         return $data;
 
-       //  return Redirect::to('marca')
-       // ->with('success','Marca Actualizado Satisfactoriamente');
+      } else { // si no se redirige a index
+
+        return view('/theme/index');
+
+      }
+
     }
 
     /**
@@ -117,15 +138,23 @@ class CargoController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            //Eliminar registro
-            return Cargo::where('id',$id)->delete();
-        }
-        catch (\Exception $e) {
-          return response()->json([
-              'status' => 'Ocurrio un error!',
-              'msg' => 'No puede ser eliminada, está siendo usada.',
-          ],400);
+        if($request->ajax()){ // si es por una etición ajax
+
+          try {
+              //Eliminar registro
+              return Cargo::where('id',$id)->delete();
+          }
+          catch (\Exception $e) {
+            return response()->json([
+                'status' => 'Ocurrio un error!',
+                'msg' => 'No puede ser eliminada, está siendo usada.',
+            ],400);
+          }
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
         }
     }
 
@@ -136,11 +165,15 @@ class CargoController extends Controller
     */
     public function contar(Request $request)
     {
-      if($request->ajax()){
+      if($request->ajax()){ // si es por una etición ajax
 
         $data = Cargo::all()->count();
 
         return $data;
+      } else { // si no se redirige a index
+
+        return view('/theme/index');
+
       }
     }
 }

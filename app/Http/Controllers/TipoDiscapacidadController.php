@@ -15,16 +15,24 @@ class TipoDiscapacidadController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre = $request->get('buscar');
+          if($request->ajax()){ // si es por una petición ajax
 
-        $pag = $request->pag;
+            $nombre = $request->get('buscar');
 
-        $tipos_d = Tipo_discapacidad::where('tipo_d','like',"%$nombre%")->orderBy('id','desc')
-        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
-        ->take(6) //para limitar el resultado
-        ->get();
+            $pag = $request->pag;
 
-        return $tipos_d;
+            $tipos_d = Tipo_discapacidad::where('tipo_d','like',"%$nombre%")->orderBy('id','desc')
+            ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+            ->take(6) //para limitar el resultado
+            ->get();
+
+            return $tipos_d;
+
+          } else { // si no se redirige a index
+
+            return view('/theme/index');
+
+          }
     }
 
     /**
@@ -45,15 +53,23 @@ class TipoDiscapacidadController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'tipo_d' => 'required',
-        ]);
+          if($request->ajax()){ // si es por una petición ajax
 
-        $tipo_d = new Tipo_discapacidad();
-        $tipo_d->tipo_d = $request->tipo_d;
-        $tipo_d->save();
+            $request->validate([
+              'tipo_d' => 'required',
+            ]);
 
-        return $tipo_d;
+            $tipo_d = new Tipo_discapacidad();
+            $tipo_d->tipo_d = $request->tipo_d;
+            $tipo_d->save();
+
+            return $tipo_d;
+
+          } else { // si no se redirige a index
+
+            return view('/theme/index');
+
+          }
     }
 
     /**
@@ -90,14 +106,22 @@ class TipoDiscapacidadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'tipo_d' => 'required',
-        ]);
+          if($request->ajax()){ // si es por una petición ajax
 
-        $update = ['tipo_d' => $request->tipo_d];
-        $data = tipo_discapacidad::where('id',$id)->update($update);
+            $request->validate([
+              'tipo_d' => 'required',
+            ]);
 
-        return $data;
+            $update = ['tipo_d' => $request->tipo_d];
+            $data = tipo_discapacidad::where('id',$id)->update($update);
+
+            return $data;
+
+          } else { // si no se redirige a index
+
+            return view('/theme/index');
+
+          }
     }
 
     /**
@@ -108,16 +132,24 @@ class TipoDiscapacidadController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            //Eliminar registro
-            return tipo_discapacidad::where('id',$id)->delete();
-        }
-        catch (\Exception $e) {
-          return response()->json([
-              'status' => 'Ocurrio un error!',
-              'msg' => 'No puede ser eliminada, está siendo usada.',
-          ],400);
-        }
+          if($request->ajax()){ // si es por una petición ajax
+
+            try {
+              //Eliminar registro
+              return tipo_discapacidad::where('id',$id)->delete();
+            }
+            catch (\Exception $e) {
+              return response()->json([
+                'status' => 'Ocurrio un error!',
+                'msg' => 'No puede ser eliminada, está siendo usada.',
+              ],400);
+            }
+
+          } else { // si no se redirige a index
+
+            return view('/theme/index');
+
+          }
     }
 
     public function buscador (Request $request){
@@ -132,11 +164,16 @@ class TipoDiscapacidadController extends Controller
      */
     public function contar(Request $request)
     {
-        if($request->ajax()){
+        if($request->ajax()){ // si es por una petición ajax
 
             $data = tipo_discapacidad::all()->count();
 
             return $data;
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
         }
     }
 }

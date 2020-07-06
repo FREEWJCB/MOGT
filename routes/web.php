@@ -29,46 +29,72 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get("/alergia/contar", "AlergiaController@contar");
 
-Route::resource('alergia','AlergiaController');
+Route::resource('alergia','AlergiaController')->except([
+  'create', 'show', 'edit'
+]);
 
 Route::get("/tipoAlergia/contar", "TipoAlergiaController@contar");
 
-Route::resource('tipoAlergia','TipoAlergiaController');
+Route::resource('tipoAlergia','TipoAlergiaController')->except([
+  'create', 'show', 'edit'
+]);
 
 Route::resource('usuario','UsuarioController');
 
 Route::get("/discapacidad/contar", "DiscapacidadController@contar");
 
-Route::resource('discapacidad','DiscapacidadController');
+Route::resource('discapacidad','DiscapacidadController')->except([
+  'create', 'show', 'edit'
+]);
 
 Route::get("/tipoDiscapacidad/contar", "TipoDiscapacidadController@contar");
 
-Route::resource('tipoDiscapacidad','TipoDiscapacidadController');
+Route::resource('tipoDiscapacidad','TipoDiscapacidadController')->except([
+  'create', 'show', 'edit'
+]);
 
 Route::get("/estado/contar", "EstadoController@contar");
 
-Route::resource('estado','EstadoController');
+Route::resource('estado','EstadoController')->except([
+  'create', 'show', 'edit'
+]);
 
-Route::resource('municipio','MunicipioController');
+Route::resource('municipio','MunicipioController')->except([
+  'create', 'show', 'edit'
+]);
 
 Route::post('/parroquia/municipio','ParroquiaController@municipio');
 
-Route::resource('parroquia','ParroquiaController');
+Route::resource('parroquia','ParroquiaController')->except([
+  'create', 'show', 'edit'
+]);
 
-Route::resource('empleado','EmpleadoController');
+Route::resource('empleado','EmpleadoController')->except([
+  'create', 'show', 'edit'
+]);
 
 Route::get("/cargo/contar", "CargoController@contar");
 
-Route::resource('cargo','CargoController');
+Route::resource('cargo','CargoController')->except([
+  'create', 'show', 'edit'
+]);
 
-Route::get('/auth', function(){
-  if(Auth::user()){
-    return Auth::user();
-  }else{
-    return response()->json([
-        'status' => 'Ocurrio un error!',
-        'msg' => 'El usuario no esta loggeado.',
-    ],400);
+Route::get('/auth', function(Illuminate\Http\Request $request){
+  if($request->ajax()){  // si es por una petición ajax
+
+    if(Auth::user()){
+      return Auth::user();
+    }else{
+      return response()->json([
+          'status' => 'Ocurrio un error!',
+          'msg' => 'El usuario no esta loggeado.',
+      ],400);
+    }
+
+  } else { // si no se redirige a index
+
+    return view('/theme/index');
+
   }
 });
 

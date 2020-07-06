@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/Error.js": "/Error.js",
     "/alergia.js": "/alergia.js",
     "/alergia~cargo~discapacidad~estado~tipoAlergia~tipoDiscapacidad.js": "/alergia~cargo~discapacidad~estado~tipoAlergia~tipoDiscapacidad.js",
     "/cargo.js": "/cargo.js",

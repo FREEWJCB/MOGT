@@ -41,4 +41,14 @@ export const rutas = [
       name: 'estado',
       component: () => import(/* webpackChunkName: "estado" */ `./components/estado/MainComponent.vue`)
     },
+    {
+      path: '/404',
+      component: () => import(/* webpackChunkName: "Error" */ `./components/theme/ErrorComponent.vue`),
+      meta: { Auth: false, title: 'Not Found' }
+    },
+    {
+      path: '*',
+      redirect: '/404',
+      meta: { Auth: false, title: 'Not Found' }
+    }
 ]

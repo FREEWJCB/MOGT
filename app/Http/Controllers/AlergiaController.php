@@ -17,20 +17,26 @@ class AlergiaController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre = $request->get('buscar');
+        if($request->ajax()){
+          $nombre = $request->get('buscar');
 
-        $pag = $request->pag;
+          $pag = $request->pag;
 
-        // Se obtiene los datos de la Vista view_alergia
-        $alergia = DB::table('view_alergia')
-        ->where('nombre','like',"%$nombre%")->orderBy('id','desc')
-        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
-        ->take(6) //para limitar el resultado
-        ->get();
+          // Se obtiene los datos de la Vista view_alergia
+          $alergia = DB::table('view_alergia')
+          ->where('nombre','like',"%$nombre%")->orderBy('id','desc')
+          ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+          ->take(6) //para limitar el resultado
+          ->get();
 
-            $tipos_a = tipo_alergia::all();
+              $tipos_a = tipo_alergia::all();
 
-        return compact('alergia', 'tipos_a');
+          return compact('alergia', 'tipos_a');
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+          
+        }
     }
 
     /**
@@ -52,19 +58,26 @@ class AlergiaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'descripcion' => 'required',
-            'tipoAlergia_id' => 'required',
-        ]);
+        if ($request->ajax()) {
+          // code...
+          $request->validate([
+              'nombre' => 'required',
+              'descripcion' => 'required',
+              'tipoAlergia_id' => 'required',
+          ]);
 
-       $alergia = new Alergia();
-       $alergia->nombre = $request->nombre;
-       $alergia->descripcion = $request->descripcion;
-       $alergia->tipoAlergia_id = $request->tipoAlergia_id;
-       $alergia->save();
+         $alergia = new Alergia();
+         $alergia->nombre = $request->nombre;
+         $alergia->descripcion = $request->descripcion;
+         $alergia->tipoAlergia_id = $request->tipoAlergia_id;
+         $alergia->save();
 
-       return $alergia;
+         return $alergia;
+        } else { // si no se redirige a index
+          // code...
+          return view('/theme/index');
+        }
+
     }
 
     /**
@@ -103,20 +116,29 @@ class AlergiaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'descripcion' => 'required',
-            'tipoAlergia_id' => 'required',
-        ]);
+        if($request->ajax()){
 
-        $update = [ 'nombre' => $request->nombre,
-                    'descripcion' => $request->descripcion,
-                    'tipoAlergia_id' => $request->tipoAlergia_id,
-                ];
+          $request->validate([
+              'nombre' => 'required',
+              'descripcion' => 'required',
+              'tipoAlergia_id' => 'required',
+          ]);
 
-       $alergia = Alergia::where('id',$id)->update($update);
+          $update = [ 'nombre' => $request->nombre,
+                      'descripcion' => $request->descripcion,
+                      'tipoAlergia_id' => $request->tipoAlergia_id,
+                  ];
 
-       return $alergia;
+         $alergia = Alergia::where('id',$id)->update($update);
+
+         return $alergia;
+
+       } else { // si no se redirige a index
+
+         return view('/theme/index');
+
+       }
+
     }
 
     /**
@@ -127,16 +149,24 @@ class AlergiaController extends Controller
      */
     public function destroy($id)
     {
-      try {
-        //Eliminar registro
-        $alergia = Alergia::where('id',$id)->delete();
-        return $alergia;
-      }
-      catch (\Exception $e) {
-        return response()->json([
-          'status' => 'Ocurrio un error!',
-          'msg' => 'No puede ser eliminada, está siendo usada.',
-        ],400);
+      if($request->ajax()){
+
+        try {
+          //Eliminar registro
+          $alergia = Alergia::where('id',$id)->delete();
+          return $alergia;
+        }
+        catch (\Exception $e) {
+          return response()->json([
+            'status' => 'Ocurrio un error!',
+            'msg' => 'No puede ser eliminada, está siendo usada.',
+          ],400);
+        }
+
+      } else { // si no se redirige a index
+
+        return view('/theme/index');
+
       }
     }
 
@@ -147,11 +177,16 @@ class AlergiaController extends Controller
      */
     public function contar(Request $request)
     {
-        if($request->ajax()){
+        if($request->ajax()){ // si es por una etición ajax
 
             $data = Alergia::all()->count();
 
             return $data;
+
+        }  else { // si no se redirige a index
+
+          return view('/theme/index');
+
         }
     }
 }

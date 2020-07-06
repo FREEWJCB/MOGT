@@ -15,16 +15,24 @@ class TipoAlergiaController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre = $request->get('buscar');
+          if($request->ajax()){ // si es por una petición ajax
 
-        $pag = $request->pag;
+            $nombre = $request->get('buscar');
 
-        $tipos = tipo_alergia::where('name','like',"%$nombre%")->orderBy('id','desc')
-        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
-        ->take(6) //para limitar el resultado
-        ->get();
+            $pag = $request->pag;
 
-        return $tipos;
+            $tipos = tipo_alergia::where('name','like',"%$nombre%")->orderBy('id','desc')
+            ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+            ->take(6) //para limitar el resultado
+            ->get();
+
+            return $tipos;
+
+          } else { // si no se redirige a index
+
+            return view('/theme/index');
+
+          }
     }
 
     /**
@@ -45,15 +53,23 @@ class TipoAlergiaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
+          if($request->ajax()){ // si es por una petición ajax
 
-        $tipos = new tipo_alergia();
-        $tipos->name = $request->name;
-        $tipos->save();
+            $request->validate([
+              'name' => 'required',
+            ]);
 
-        return $tipos;
+            $tipos = new tipo_alergia();
+            $tipos->name = $request->name;
+            $tipos->save();
+
+            return $tipos;
+
+          } else { // si no se redirige a index
+
+            return view('/theme/index');
+
+          }
     }
 
     /**
@@ -90,14 +106,22 @@ class TipoAlergiaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
+          if($request->ajax()){ // si es por una petición ajax
 
-        $update = ['name' => $request->name];
-        $data = tipo_alergia::where('id',$id)->update($update);
+            $request->validate([
+              'name' => 'required',
+            ]);
 
-        return $data;
+            $update = ['name' => $request->name];
+            $data = tipo_alergia::where('id',$id)->update($update);
+
+            return $data;
+
+          } else { // si no se redirige a index
+
+            return view('/theme/index');
+
+          }
     }
 
     /**
@@ -108,16 +132,24 @@ class TipoAlergiaController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            //Eliminar registro
-            return tipo_alergia::where('id',$id)->delete();
-        }
-        catch (\Exception $e) {
-          return response()->json([
-              'status' => 'Ocurrio un error!',
-              'msg' => 'No puede ser eliminada, está siendo usada.',
-          ],400);
-        }
+          if($request->ajax()){ // si es por una petición ajax
+
+            try {
+              //Eliminar registro
+              return tipo_alergia::where('id',$id)->delete();
+            }
+            catch (\Exception $e) {
+              return response()->json([
+                'status' => 'Ocurrio un error!',
+                'msg' => 'No puede ser eliminada, está siendo usada.',
+              ],400);
+            }
+
+          } else { // si no se redirige a index
+
+            return view('/theme/index');
+
+          }
     }
 
     public function buscador (Request $request){
@@ -132,11 +164,16 @@ class TipoAlergiaController extends Controller
     */
     public function contar(Request $request)
     {
-      if($request->ajax()){
+      if($request->ajax()){ // si es por una petición ajax
 
         $data = tipo_alergia::all()->count();
 
         return $data;
+
+      } else { // si no se redirige a index
+
+        return view('/theme/index');
+
       }
     }
 }

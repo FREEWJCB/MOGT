@@ -15,16 +15,24 @@ class EstadoController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre = $request->get('buscar');
+        if($request->ajax()){  // si es por una petición ajax
 
-        $pag = $request->pag;
+          $nombre = $request->get('buscar');
 
-        $estados = Estado::where('estado','like',"%$nombre%")->orderBy('id','desc')
-        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
-        ->take(6) //para limitar el resultado
-        ->get();
+          $pag = $request->pag;
 
-        return $estados;
+          $estados = Estado::where('estado','like',"%$nombre%")->orderBy('id','desc')
+          ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+          ->take(6) //para limitar el resultado
+          ->get();
+
+          return $estados;
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
+        }
     }
 
     /**
@@ -45,15 +53,23 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'estado' => 'required',
-        ]);
+       if($request->ajax()){  // si es por una petición ajax
 
-       $estado = new Estado();
-       $estado->estado = $request->estado;
-       $estado->save();
+         $request->validate([
+           'estado' => 'required',
+         ]);
 
-       return $estado;
+         $estado = new Estado();
+         $estado->estado = $request->estado;
+         $estado->save();
+
+         return $estado;
+
+       } else { // si no se redirige a index
+
+         return view('/theme/index');
+
+       }
     }
 
     /**
@@ -90,14 +106,22 @@ class EstadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        if($request->ajax()){  // si es por una petición ajax
+
+          $request->validate([
             'estado' => 'required',
-        ]);
+          ]);
 
-        $update = ['estado' => $request->estado];
-        $data = Estado::where('id',$id)->update($update);
+          $update = ['estado' => $request->estado];
+          $data = Estado::where('id',$id)->update($update);
 
-        return $data;
+          return $data;
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
+        }
     }
 
     /**
@@ -108,15 +132,23 @@ class EstadoController extends Controller
      */
     public function destroy($id)
     {
-        try {
+        if($request->ajax()){  // si es por una petición ajax
+
+          try {
             //Eliminar registro
             return Estado::where('id',$id)->delete();
-        }
-        catch (\Exception $e) {
-          return response()->json([
+          }
+          catch (\Exception $e) {
+            return response()->json([
               'status' => 'Ocurrio un error!',
               'msg' => 'No puede ser eliminada, está siendo usada.',
-          ],400);
+            ],400);
+          }
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
         }
     }
 
@@ -127,11 +159,16 @@ class EstadoController extends Controller
     */
     public function contar(Request $request)
     {
-      if($request->ajax()){
+      if($request->ajax()){ // si es por una petición ajax
 
         $data = Estado::all()->count();
 
         return $data;
+
+      } else { // si no se redirige a index
+
+        return view('/theme/index');
+
       }
     }
 }

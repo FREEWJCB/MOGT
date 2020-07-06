@@ -17,20 +17,28 @@ class DiscapacidadController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre = $request->get('buscar');
+        if($request->ajax()){ // si es por una etición ajax
 
-        $pag = $request->pag;
+          $nombre = $request->get('buscar');
 
-        // Se obtiene los datos de la Vista view_discapacidad
-        $discapacidades = DB::table('view_discapacidad')
-        ->where('discapacidad','like',"%$nombre%")->orderBy('id','desc')
-        ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
-        ->take(6) //para limitar el resultado
-        ->get();
+          $pag = $request->pag;
 
-            $tipos_d = Tipo_discapacidad::all();
+          // Se obtiene los datos de la Vista view_discapacidad
+          $discapacidades = DB::table('view_discapacidad')
+          ->where('discapacidad','like',"%$nombre%")->orderBy('id','desc')
+          ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+          ->take(6) //para limitar el resultado
+          ->get();
 
-        return compact('discapacidades', 'tipos_d');
+          $tipos_d = Tipo_discapacidad::all();
+
+          return compact('discapacidades', 'tipos_d');
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
+        }
     }
 
     /**
@@ -52,19 +60,27 @@ class DiscapacidadController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        if($request->ajax()){  // si es por una petición ajax
+
+          $request->validate([
             'discapacidad' => 'required',
             'descripciones' => 'required',
             'tipoDiscapacidad_id' => 'required',
-        ]);
+          ]);
 
-        $discapacidad = new Discapacidad();
-        $discapacidad->discapacidad = $request->discapacidad;
-        $discapacidad->descripciones = $request->descripciones;
-        $discapacidad->tipoDiscapacidad_id = $request->tipoDiscapacidad_id;
-        $discapacidad->save();
+          $discapacidad = new Discapacidad();
+          $discapacidad->discapacidad = $request->discapacidad;
+          $discapacidad->descripciones = $request->descripciones;
+          $discapacidad->tipoDiscapacidad_id = $request->tipoDiscapacidad_id;
+          $discapacidad->save();
 
-        return $discapacidad;
+          return $discapacidad;
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
+        }
     }
 
     /**
@@ -103,19 +119,27 @@ class DiscapacidadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        if($request->ajax()){  // si es por una petición ajax
+
+          $request->validate([
             'discapacidad' => 'required',
             'descripciones' => 'required',
             'tipoDiscapacidad_id' => 'required',
-        ]);
+          ]);
 
-        $update = [ 'discapacidad' => $request->discapacidad,
-                    'descripciones' => $request->descripciones,
-                    'tipoDiscapacidad_id' => $request->tipoDiscapacidad_id,
-                ];
+          $update = [ 'discapacidad' => $request->discapacidad,
+          'descripciones' => $request->descripciones,
+          'tipoDiscapacidad_id' => $request->tipoDiscapacidad_id,
+        ];
         $discapacidad = Discapacidad::where('id',$id)->update($update);
 
         return $discapacidad;
+
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
+        }
     }
 
     /**
@@ -126,17 +150,24 @@ class DiscapacidadController extends Controller
      */
     public function destroy($id)
     {
+      if($request->ajax()){  // si es por una petición ajax
 
-      try {
-        //Eliminar registro
-        $discapacidad = Discapacidad::where('id',$id)->delete();
-        return $discapacidad;
-      }
-      catch (\Exception $e) {
-        return response()->json([
-          'status' => 'Ocurrio un error!',
-          'msg' => 'No puede ser eliminada, está siendo usada.',
-        ],400);
+        try {
+          //Eliminar registro
+          $discapacidad = Discapacidad::where('id',$id)->delete();
+          return $discapacidad;
+        }
+        catch (\Exception $e) {
+          return response()->json([
+            'status' => 'Ocurrio un error!',
+            'msg' => 'No puede ser eliminada, está siendo usada.',
+          ],400);
+        }
+
+      } else { // si no se redirige a index
+
+        return view('/theme/index');
+
       }
     }
 
@@ -147,11 +178,15 @@ class DiscapacidadController extends Controller
      */
     public function contar(Request $request)
     {
-        if($request->ajax()){
+        if($request->ajax()){  // si es por una petición ajax
 
             $data = Discapacidad::all()->count();
 
             return $data;
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
         }
     }
 }
