@@ -59,6 +59,8 @@ Route::resource('estado','EstadoController')->except([
   'create', 'show', 'edit'
 ]);
 
+Route::get("/municipio/contar", "MunicipioController@contar");
+
 Route::resource('municipio','MunicipioController')->except([
   'create', 'show', 'edit'
 ]);

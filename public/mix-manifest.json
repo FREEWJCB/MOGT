@@ -3,10 +3,11 @@
     "/css/app.css": "/css/app.css",
     "/Error.js": "/Error.js",
     "/alergia.js": "/alergia.js",
-    "/alergia~cargo~discapacidad~estado~tipoAlergia~tipoDiscapacidad.js": "/alergia~cargo~discapacidad~estado~tipoAlergia~tipoDiscapacidad.js",
+    "/alergia~cargo~discapacidad~estado~municipio~tipoAlergia~tipoDiscapacidad.js": "/alergia~cargo~discapacidad~estado~municipio~tipoAlergia~tipoDiscapacidad.js",
     "/cargo.js": "/cargo.js",
     "/discapacidad.js": "/discapacidad.js",
     "/estado.js": "/estado.js",
+    "/municipio.js": "/municipio.js",
     "/tipoAlergia.js": "/tipoAlergia.js",
     "/tipoDiscapacidad.js": "/tipoDiscapacidad.js"
 }

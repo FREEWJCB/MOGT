@@ -80,9 +80,11 @@
               </router-link>
             </li>
             <li class="nav-item disabled">
-              <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
-                <span class="fas fa-map-marked-alt"></span> Municipio
-              </a>
+              <router-link :to="{ name: 'municipio', params: { pag: 1 } }">
+                <a class="nav-link mr-4 text-dark">
+                  <span class="fas fa-map-marked-alt"></span> Municipio
+                </a>
+              </router-link>
             </li>
             <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">

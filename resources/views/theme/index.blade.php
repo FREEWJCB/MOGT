@@ -17,7 +17,7 @@
 <body class="vw-100 vh-100">
 
   <div id="app">
-    <app-Component></app-Component>
+    <app></app>
   </div>
 
 </body>

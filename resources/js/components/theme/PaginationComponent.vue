@@ -28,9 +28,11 @@
           </router-link>
           </li>
           <li class="page-item" v-for="p in paginacion.paginas" :key="p.key">
-            <router-link :to="{ name: ruta, params: { pag: p+1 } }">
-              <a class="page-link">{{ p + 1 }}</a>
-            </router-link>
+            <template v-if="(paginacion.pag - 5) < p && p < (paginacion.pag + 5)">
+              <router-link :to="{ name: ruta, params: { pag: p+1 } }">
+                <a class="page-link">{{ p + 1 }}</a>
+              </router-link>
+            </template>
           </li>
           <li class="page-item disabled" v-if="paginacion.paginas.length == paginacion.pag">
               <a class="page-link" aria-disabled="true">

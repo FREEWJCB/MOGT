@@ -6,6 +6,7 @@ import tipoAlergia from './modules/tipoAlergia.js'
 import alergia from './modules/alergia.js'
 import cargo from './modules/cargo.js'
 import estado from './modules/estado.js'
+import municipio from './modules/municipio.js'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     tipoAlergia,
     alergia,
     cargo,
-    estado
+    estado,
+    municipio
   }
 })
