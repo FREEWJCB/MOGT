@@ -65,7 +65,9 @@ Route::resource('municipio','MunicipioController')->except([
   'create', 'show', 'edit'
 ]);
 
-Route::post('/parroquia/municipio','ParroquiaController@municipio');
+Route::get("/parroquia/contar", "ParroquiaController@contar");
+
+Route::get('/parroquia/municipio','ParroquiaController@municipio');
 
 Route::resource('parroquia','ParroquiaController')->except([
   'create', 'show', 'edit'

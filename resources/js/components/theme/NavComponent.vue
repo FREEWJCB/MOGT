@@ -81,15 +81,17 @@
             </li>
             <li class="nav-item disabled">
               <router-link :to="{ name: 'municipio', params: { pag: 1 } }">
-                <a class="nav-link mr-4 text-dark">
+                <a class="nav-link mr-4 text-white">
                   <span class="fas fa-map-marked-alt"></span> Municipio
                 </a>
               </router-link>
             </li>
-            <li class="nav-item disabled">
-              <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">
-                <span class="fas fa-church"></span> Parroquia
-              </a>
+            <li class="nav-item">
+              <router-link :to="{ name: 'parroquia', params: { pag: 1 } }">
+                <a class="nav-link mr-4 text-white">
+                  <span class="fas fa-church"></span> Parroquia
+                </a>
+              </router-link>
             </li>
             <li class="nav-item disabled">
               <a class="nav-link mr-4 text-dark disabled" disabled="true" tabindex="-1" aria-disabled="true">

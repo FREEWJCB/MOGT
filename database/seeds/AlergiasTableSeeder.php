@@ -30,6 +30,7 @@ class AlergiasTableSeeder extends Seeder
          $tipoAlergia->name = "Medicamento";
          $tipoAlergia->save();
 
+         DB::statement("SELECT setval(pg_get_serial_sequence('tipo_alergias', 'id'), coalesce(max(id)+1,1), false) FROM tipo_alergias;");
 
          $libro = new Alergia();
          $libro->nombre = "Rinitis";
@@ -60,5 +61,10 @@ class AlergiasTableSeeder extends Seeder
          $libro->descripcion = "Malestar general e inflamación de la tráquea";
          $libro->tipoAlergia_id = 4;
          $libro->save();
+
+        // Solucionando error de la id
+        DB::statement("SELECT setval(pg_get_serial_sequence('alergias', 'id'), coalesce(max(id)+1,1), false) FROM alergias;");
+        // El error sucede ya que postgresql al solo implantarle datos sin espicifarle que incremente la id
+        // postgresql hara como que la id sigue siendo 1
      }
 }

@@ -39,5 +39,10 @@ class EstadoTableSeeder extends Seeder
         ['id' => 24, 'estado' => 'Distrito Capital'],
         ['id' => 25, 'estado' => 'Dependencias Federales'],
       ]);
+
+        // Solucionando error de la id
+        DB::statement("SELECT setval(pg_get_serial_sequence('estados', 'id'), coalesce(max(id)+1,1), false) FROM estados;");
+        // El error sucede ya que postgresql al solo implantarle datos sin espicifarle que incremente la id
+        // postgresql hara como que la id sigue siendo 1
     }
 }

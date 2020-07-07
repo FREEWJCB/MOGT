@@ -1152,5 +1152,10 @@ class ParroquiaTableSeeder extends Seeder
         ['id' => 1137, 'municipio_id' =>  462, 'parroquia' =>  'Sucre (Catia)'],
         ['id' => 1138, 'municipio_id' =>  462, 'parroquia' =>  '23 de enero']
       ]);
+
+        // Solucionando error de la id
+        DB::statement("SELECT setval(pg_get_serial_sequence('parroquias', 'id'), coalesce(max(id)+1,1), false) FROM parroquias;");
+        // El error sucede ya que postgresql al solo implantarle datos sin espicifarle que incremente la id
+        // postgresql hara como que la id sigue siendo 1
     }
 }

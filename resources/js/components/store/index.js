@@ -7,6 +7,7 @@ import alergia from './modules/alergia.js'
 import cargo from './modules/cargo.js'
 import estado from './modules/estado.js'
 import municipio from './modules/municipio.js'
+import parroquia from './modules/parroquia.js'
 
 Vue.use(Vuex)
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     alergia,
     cargo,
     estado,
-    municipio
+    municipio,
+    parroquia
   }
 })

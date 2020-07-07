@@ -19,9 +19,9 @@ class CreatePersonasTable extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('sex');
-            $table->string('telefono');
-            $table->string('telefono_hab');
-            $table->string('telefono_otro');
+            $table->string('telefono')->nullable();
+            $table->string('telefono_hab')->nullable();
+            $table->string('telefono_otro')->nullable();
             $table->unsignedBigInteger('direccion_id')
                   ->references('id')->on('direccions')
                   ->onDelete('cascade');

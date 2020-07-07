@@ -21,5 +21,10 @@ class UsersTableSeeder extends Seeder
         ['id' => 4, 'name' => Str::random(10), 'email' => Str::random(10).'@gmail.com','password' => Hash::make('password')],
         ['id' => 5, 'name' => Str::random(10), 'email' => Str::random(10).'@gmail.com','password' => Hash::make('password')]
       ]);
+
+        // Solucionando error de la id
+        DB::statement("SELECT setval(pg_get_serial_sequence('users', 'id'), coalesce(max(id)+1,1), false) FROM users;");
+        // El error sucede ya que postgresql al solo implantarle datos sin espicifarle que incremente la id
+        // postgresql hara como que la id sigue siendo 1
     }
 }

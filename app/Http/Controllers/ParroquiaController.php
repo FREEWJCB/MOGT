@@ -7,6 +7,7 @@ use App\Municipio;
 use App\Estado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 
 class ParroquiaController extends Controller
 {
@@ -17,19 +18,26 @@ class ParroquiaController extends Controller
      */
     public function index(Request $request)
     {
-        $nombre = $request->get('buscar');
+        if($request->ajax()){
+          $nombre = $request->get('buscar');
 
-        $variablesurl = $request->all();
+          $pag = $request->pag;
 
-        $parroquias = Parroquia::select('parroquias.id','parroquias.parroquia','municipios.municipio','estados.estado')
-        ->join("municipios",'municipios.id','=','parroquias.municipio_id')
-        ->join("estados", "estados.id",'=', "municipios.estado_id")
-        ->where('parroquias.parroquia','like',"%$nombre%")
-        ->orderBy('parroquias.id','asc')
-        ->paginate(4)
-        ->appends($variablesurl);
+          // Se obtiene los datos de la Vista view_parroquia
+          $parroquia = DB::table('view_parroquia')
+          ->where('parroquia','like',"%$nombre%")->orderBy('id','desc')
+          ->skip(($pag * 6) - 6) //skip() para saltar entre la consulta
+          ->take(6) //para limitar el resultado
+          ->get();
 
-        return view('parroquia.list', compact('parroquias'));
+          $estado = Estado::all();
+
+          return compact('parroquia', 'estado');
+        } else { // si no se redirige a index
+
+          return view('/theme/index');
+
+        }
     }
 
     /**
@@ -52,10 +60,17 @@ class ParroquiaController extends Controller
      */
     public function municipio(Request $request)
     {
-      $estado_id = $request->estado_id;
-      $municipios = Municipio::where('estado_id', '=', $estado_id)->get();
-      $estados = Estado::all();
-      return view('parroquia.create', compact('estados', 'estado_id', 'municipios'));
+      if($request->ajax()){
+
+        $estado_id = $request->estado_id;
+        $municipios = Municipio::where('estado_id', '=', $estado_id)->get();
+        return $municipios;
+
+      } else { // si no se redirige a index
+
+        return view('/theme/index');
+
+      }
     }
 
     /**
@@ -66,15 +81,23 @@ class ParroquiaController extends Controller
      */
     public function store(Request $request)
     {
-      $request->validate([
-         'municipio_id' => 'required',
-         'parroquia' => 'required',
-     ]);
+      if ($request->ajax()) {
+        // code...
+        $request->validate([
+           'municipio_id' => 'required',
+           'parroquia' => 'required',
+       ]);
 
-     Parroquia::create($request->all());
+        $parroquia = new Parroquia();
+        $parroquia->parroquia = $request->parroquia;
+        $parroquia->municipio_id = $request->municipio_id;
+        $parroquia->save();
 
-     return Redirect::to('parroquia')
-    ->with('mensaje','Parroquia creada satisfactoriamente.');
+        return $parroquia;
+      } else { // si no se redirige a index
+        // code...
+        return view('/theme/index');
+      }
     }
 
     /**
@@ -115,18 +138,27 @@ class ParroquiaController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $request->validate([
-          'parroquia' => 'required',
-          'municipio_id' => 'required',
-      ]);
+       if($request->ajax()){
 
-      $update = [ 'parroquia' => $request->parroquia,
-                  'municipio_id' => $request->municipio_id,
-              ];
-      Parroquia::where('id',$id)->update($update);
+         $request->validate([
+             'parroquia' => 'required',
+             'municipio_id' => 'required',
+         ]);
 
-      return Redirect::to('parroquia')
-     ->with('success','Parroquia actualizada satisfactoriamente');
+         $update = [
+           'parroquia' => $request->parroquia,
+           'municipio_id' => $request->municipio_id,
+                 ];
+
+         $parroquia = Parroquia::where('id',$id)->update($update);
+
+         return $parroquia;
+
+       } else { // si no se redirige a index
+
+         return view('/theme/index');
+
+       }
     }
 
     /**
@@ -135,15 +167,46 @@ class ParroquiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-      try {
+      if($request->ajax()){
+
+        try {
           //Eliminar registro
-          Parroquia::where('id',$id)->delete();
-          return Redirect::to('parroquia')->with('mensaje','Parroquia eliminada satisfactoriamente');
+          $alergia = Parroquia::where('id',$id)->delete();
+          return $alergia;
+        }
+        catch (\Exception $e) {
+          return response()->json([
+            'status' => 'Ocurrio un error!',
+            'msg' => 'No puede ser eliminada, está siendo usada.',
+          ],400);
+        }
+
+      } else { // si no se redirige a index
+
+        return view('/theme/index');
+
       }
-      catch (\Exception $e) {
-          return Redirect::to('parroquia')->with('mensaje','No puede ser eliminada, está siendo usada.');
-      }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function contar(Request $request)
+    {
+        if($request->ajax()){ // si es por una etición ajax
+
+            $data = Parroquia::all()->count();
+
+            return $data;
+
+        }  else { // si no se redirige a index
+
+          return view('/theme/index');
+
+        }
     }
 }

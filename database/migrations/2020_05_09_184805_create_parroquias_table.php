@@ -21,6 +21,22 @@ class CreateParroquiasTable extends Migration
                   ->references('id')->on('municipios');
             $table->timestamps();
         });
+
+        // Creación de la Vista view_discapacidad
+        DB::statement('CREATE OR REPLACE VIEW view_parroquia AS
+                          SELECT
+                          p.id,
+                          p.parroquia,
+                          p."municipio_id",
+                          m.municipio,
+                          m."estado_id",
+                          e.estado
+                          FROM parroquias p
+                          INNER JOIN municipios m
+                          ON m.id = p."municipio_id"
+                          INNER JOIN estados e
+                          ON e.id = m."estado_id";
+                          ');
     }
 
     /**
@@ -30,6 +46,9 @@ class CreateParroquiasTable extends Migration
      */
     public function down()
     {
+        // Eliminar Vista view_discapacidad
+        DB::statement("DELETE VIEW view_parroquia");
+
         Schema::dropIfExists('parroquias');
     }
 }

@@ -34,11 +34,6 @@ class CreateMunicipiosTable extends Migration
                           ON e.id = m."estado_id";
                           ');
 
-        // Solucionando error de la id
-        DB::statement('SELECT setval(pg_get_serial_sequence('municipios', 'id'), coalesce(max(id)+1,1), false) FROM municipios;');
-        // El error sucede ya que postgresql al solo implantarle datos sin espicifarle que incremente la id
-        // postgresql hara como que la id sigue siendo 1
-
     }
 
     /**

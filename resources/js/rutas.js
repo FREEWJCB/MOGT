@@ -48,6 +48,12 @@ export const rutas = [
       component: () => import(/* webpackChunkName: "municipio" */ `./components/municipio/MainComponent.vue`)
     },
     {
+      path: '/parroquias/:pag',
+      meta: { Auth: false, title: 'Parroquia' },
+      name: 'parroquia',
+      component: () => import(/* webpackChunkName: "municipio" */ `./components/parroquia/MainComponent.vue`)
+    },
+    {
       path: '/404',
       component: () => import(/* webpackChunkName: "Error" */ `./components/theme/ErrorComponent.vue`),
       meta: { Auth: false, title: 'Not Found' }
